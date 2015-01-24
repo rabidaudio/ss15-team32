@@ -39,7 +39,6 @@
       //handle
       return;
     }
-    console.log(this)
     firebase.child('users').child(auth.uid).set(auth);
     this.update({loggedIn: true});
   }

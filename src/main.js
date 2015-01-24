@@ -41,6 +41,6 @@ var QC = function(riot){
     }
 
     opts.providers = providers;
-    riot.mount('qcommentcontainer', opts);
+    riot.mount('qcomment', opts);
   };
 }(window.riot);

@@ -1,12 +1,11 @@
 TODO
 ====
 
-Design comments box
-build working one with FB
-get build system going
 add bower package
 
 build example site/landing page
+
+
 
 add mandrill, etc
 
@@ -21,9 +20,8 @@ Benefits
 
 - unopinionated
 - bootstrap friendly
-- small (hopefully)
+- small (hopefully) and fast (hopefully)
 - no third-party tracking of users (depending on what info oath providers get....)
-
 
 
 Future
@@ -32,7 +30,5 @@ Future
 emulate facebook messenger enter functionality
 
 
-
-
-http://microjs.com/
-https://github.com/muut/riotjs/
+- http://microjs.com/
+- https://github.com/muut/riotjs/

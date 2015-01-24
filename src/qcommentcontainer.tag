@@ -1,4 +1,5 @@
-<qcommentcontainer>
+<qcomment>
+  <h2>Comments ({ comments.length })</h2>
   <div class="qc-comments">
     <auth data={ opts.providers }/>
     <comment each={ comments } data={ this }/>
@@ -81,4 +82,4 @@
   query.on("child_changed", this.updateComment);
   query.on("child_removed", this.removeComment);
   
-</qcommentcontainer>
+</qcomment>

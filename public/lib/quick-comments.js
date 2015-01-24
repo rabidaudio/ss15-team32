@@ -182,7 +182,6 @@ riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged
       console.error(err);
       return;
     }
-    console.log(this)
     firebase.child('users').child(auth.uid).set(auth);
     this.update({loggedIn: true});
   }.bind(this)
@@ -195,7 +194,7 @@ riot.tag('comment', '<div class="qc-comment" id="comment/{ data.id }"> <div clas
 })
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ parent.loggedIn ? undefined : true }">      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }" placeholder="{ parent.loggedIn ? \'Leave a comment\' : \'Sign in to post a comment.\' }"></textarea>\n <button class="submit btn" name="submit" onclick="{ send }">Submit</button> </fieldset> </div>', function(opts) {
+riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ parent.loggedIn ? undefined : true }">      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }" placeholder="{ parent.loggedIn ? \'Leave a comment\' : \'Sign in to post a comment.\' }"></textarea>\n <button class="submit btn" name="submit" onclick="{ send }">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
   this.height = 1
 
   this.send = function(e) {
@@ -222,7 +221,7 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ 
 
 
 
-riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth data="{ opts.providers }"></auth> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
+riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <div class="qc-comments"> <auth data="{ opts.providers }"></auth> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
   this.providers = opts.providers;
   this.pageID    = opts.pageID;
   this.firebase  = opts.firebase;
@@ -346,6 +345,6 @@ var QC = function(riot){
     }
 
     opts.providers = providers;
-    riot.mount('qcommentcontainer', opts);
+    riot.mount('qcomment', opts);
   };
 }(window.riot);
