@@ -40,6 +40,10 @@ module.exports = function(grunt) {
         spawn: false,
         livereload: grunt.option('livereloadport') || LIVERELOAD_PORT
       },
+      public: {
+        files: ['public/**/*.*'],
+        tasks: []
+      }
     },
 
     connect: {
