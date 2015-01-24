@@ -251,6 +251,10 @@ riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <div class="qc-com
         info.avatar = profile.avatar_url;
         info.url = profile.html_url;
         break;
+      case "google":
+        info.avatar = profile.picture;
+        info.url = profile.link;
+        break;
     }
     return info;
   }.bind(this)
@@ -333,7 +337,7 @@ var QC = function(riot){
     if(!opts.firebase) throw "Firebase is required";
 
     //if no pageID was specified, use the url's path
-    opts.pageID = encodeURIComponent( opts.pageID || window.location.pathname.replace('.','-') );
+    opts.pageID = encodeURIComponent( opts.pageID || window.location.pathname ).replace('.','-');
 
     opts.limit = (opts.limit > 0 ? opts.limit : 100);
 

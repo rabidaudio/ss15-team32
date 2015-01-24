@@ -34,6 +34,10 @@
         info.avatar = profile.avatar_url;
         info.url = profile.html_url;
         break;
+      case "google":
+        info.avatar = profile.picture;
+        info.url = profile.link;
+        break;
     }
     return info;
   }
