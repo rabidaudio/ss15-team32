@@ -423,7 +423,7 @@ riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged
   }.bind(this)
   this.logout = function() {
     firebase.unauth();
-    this.loggedIn = false;
+    this.update({loggedIn: false});
   }.bind(this)
   this.authHandler = function(err, auth) {
     if(err){
@@ -432,8 +432,7 @@ riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged
     }
     console.log(this)
     firebase.child('users').child(auth.uid).set(auth);
-    this.loggedIn = true;
-    this.update();
+    this.update({loggedIn: true});
   }.bind(this)
 })
 
@@ -444,18 +443,15 @@ riot.tag('comment', '<div class="qc-comment" id="comment/{ data.id }"> <div clas
 })
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ parent.loggedIn ? undefined : true }">      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }" placeholder="{ parent.loggedIn ? null : \'Sign in to post a comment.\' }"></textarea>\n <button class="submit" name="submit" onclick="{ send }">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
+riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ parent.loggedIn ? undefined : true }">      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }" placeholder="{ parent.loggedIn ? \'Leave a comment\' : \'Sign in to post a comment.\' }"></textarea>\n <button class="submit btn" name="submit" onclick="{ send }">Submit</button> </fieldset> </div>', function(opts) {
   this.height = 1
 
   this.send = function(e) {
+    if(!this.spamFree()) throw "Can't save spammy comments"
 
-    if(!this.spamFree()){
-      throw "Can't save spammy comments"
-    }else{
-      this.parent.parent.save(this)
-      this.body.value = ""
-      this.shrink()
-    }
+    this.parent.parent.save(this)
+    this.body.value = ""
+    this.shrink()
   }.bind(this)
   
   this.spamFree = function() {

@@ -1,8 +1,8 @@
 <newcomment>
   <div class="qc-comment qc-new">
     <fieldset disabled={ parent.loggedIn ? undefined : true }>
-      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus={ grow } placeholder="{ parent.loggedIn ? null : 'Sign in to post a comment.' }"></textarea>
-      <button class="submit" name="submit" onclick={ send }>Submit</button>
+      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus={ grow } placeholder="{ parent.loggedIn ? 'Leave a comment' : 'Sign in to post a comment.' }"></textarea>
+      <button class="submit btn" name="submit" onclick={ send }>Submit</button>
     </fieldset>
     <hr/>
   </div>
@@ -10,14 +10,11 @@
   this.height = 1
 
   send(e) {
+    if(!this.spamFree()) throw "Can't save spammy comments"
 
-    if(!this.spamFree()){
-      throw "Can't save spammy comments"
-    }else{
-      this.parent.parent.save(this)
-      this.body.value = ""
-      this.shrink()
-    }
+    this.parent.parent.save(this)
+    this.body.value = ""
+    this.shrink()
   }
   
   spamFree() {

@@ -31,7 +31,7 @@
   }
   logout(){
     firebase.unauth();
-    this.loggedIn = false;
+    this.update({loggedIn: false});
   }
   authHandler(err, auth){
     if(err){
@@ -41,7 +41,6 @@
     }
     console.log(this)
     firebase.child('users').child(auth.uid).set(auth);
-    this.loggedIn = true;
-    this.update();
+    this.update({loggedIn: true});
   }
 </auth>
