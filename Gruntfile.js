@@ -71,13 +71,40 @@ module.exports = function(grunt) {
         path: 'http://development.<%= div.name %>.divshot.io'
       }
     },
+
+    uglify: {
+      dist: {
+        files: {
+          'quick-comments.min.js': ['quick-comments.js']
+        },
+        options: {
+          compress: true,
+        }
+      }
+    },
+
+    concat: {
+      options: {
+        separator: '\n\n\n',
+        banner: '/* <%= grunt.template.today("yyyy-mm-dd") %> */',
+      },
+      dev: {
+        src: ['.tmp/**/*.js', 'src/**/*.js'],
+        dest: 'quick-comments.js',
+      },
+    },
+    shell: {
+      riot: {
+          command: 'riot src .tmp'
+      }
+    }
   });
 
-  // grunt.registerTask('build', ['jshint', 'uglify:dist']);
+  grunt.registerTask('build', ['jshint', 'shell:riot', 'concat:dev', 'uglify:dist']);
 
-  grunt.registerTask('deploy', ['divshot:push:development']);
+  grunt.registerTask('deploy', ['build', 'divshot:push:development']);
 
-  grunt.registerTask('serve', ['connect:livereload', 'watch']);
+  grunt.registerTask('serve', ['build', 'connect:livereload', 'watch']);
   grunt.registerTask('default', ['serve', 'open:local']);
 
 };
