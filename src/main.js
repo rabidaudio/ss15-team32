@@ -1,5 +1,4 @@
 var QC = function(riot){
-  if(!riot) throw "Riot.js is required";
 
   var providers = {
     facebook: {

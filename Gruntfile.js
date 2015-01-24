@@ -78,9 +78,17 @@ module.exports = function(grunt) {
     },
 
     uglify: {
-      dist: {
+      base: {
         files: {
-          'quick-comments.min.js': ['quick-comments.js']
+          'lib/quick-comments.min.js': ['lib/quick-comments.js']
+        },
+        options: {
+          compress: true,
+        }
+      },
+      full: {
+        files: {
+          'lib/quick-comments.complete.min.js': ['lib/quick-comments.complete.js']
         },
         options: {
           compress: true,
@@ -92,10 +100,14 @@ module.exports = function(grunt) {
       options: {
         separator: '\n\n\n'
       },
-      dev: {
+      base: {
         src: ['.tmp/includes/**/*.js', '.tmp/tags/*.js', 'src/**/*.js'],
-        dest: 'quick-comments.js',
+        dest: 'lib/quick-comments.js',
       },
+      full: {
+        src: ['.tmp/includes/**/*.js', '.tmp/tags/*.js', 'src/**/*.js'],
+        dest: 'lib/quick-comments.complete.js'
+      }
     },
     shell: {
       riot: {
@@ -104,17 +116,25 @@ module.exports = function(grunt) {
     },
     copy: {
       toServer: {
-        src: ['quick-comments.js', 'quick-comments.min.js'],
+        src: ['lib/*'],
         dest: 'public/'
       },
-      includeDependencies: {
-        src: ['bower_components/vagueTime.js/lib/vagueTime-en.js'],
+      baseDependencies: {
+        src: ['bower_components/vagueTime.js/lib/vagueTime-en.js', 'bower_components/dist/riot.min.js'],
+        dest: '.tmp/includes/'
+      },
+      extraDependencies: {
+        src: ['bower_components/firebase/firebase.js'],
         dest: '.tmp/includes/'
       }
-    }
+    },
+    clean: ['.tmp']
   });
 
-  grunt.registerTask('build', ['jshint:src', 'shell:riot', 'copy:includeDependencies', 'concat:dev', 'uglify:dist', 'copy:toServer']);
+  grunt.registerTask('build', ['jshint:src', 'compile:base', 'compile:full', 'copy:toServer']);
+
+  grunt.registerTask('compile:base', ['copy:baseDependencies', 'shell:riot', 'concat:base', 'uglify:base', 'clean']);
+  grunt.registerTask('compile:full', ['copy:baseDependencies', 'copy:extraDependencies', 'shell:riot', 'concat:full', 'uglify:full', 'clean']);
 
   grunt.registerTask('deploy', ['build', 'divshot:push:development']);
 

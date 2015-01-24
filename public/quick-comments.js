@@ -304,7 +304,6 @@ riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth data="{ opts.prov
 
 
 var QC = function(riot){
-  if(!riot) throw "Riot.js is required";
 
   var providers = {
     facebook: {

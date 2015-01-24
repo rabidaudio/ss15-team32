@@ -1,7 +1,7 @@
 <qcommentcontainer>
   <div class="qc-comments">
-    <auth data={ opts.providers }></auth>
-    <comment each={ comments } data={ this }></comment>
+    <auth data={ opts.providers }/>
+    <comment each={ comments } data={ this }/>
   </div>
 
   this.providers = opts.providers;

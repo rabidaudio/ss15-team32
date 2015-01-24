@@ -12,7 +12,7 @@
       </li>
     </ul>
   </div>
-  <newcomment></newcomment>
+  <newcomment/>
 
   capitalize(sentence){
     return sentence.split(" ").map(function(e){ var a = e.split(""); a.unshift(a.shift().toUpperCase()); return a.join(""); }).join(" ");
