@@ -1,23 +1,22 @@
 <newcomment>
   <div class="qc-comment qc-new">
-    <fieldset disabled={ loggedIn ? undefined : true }>
-      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus={ grow } placeholder="{ loggedIn ? 'Leave a comment' : 'Sign in to post a comment.' }"></textarea>
+    <fieldset disabled={ parent.Auth.loggedIn() ? undefined : true }>
+      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus={ grow } placeholder="{ parent.Auth.loggedIn() ? 'Leave a comment' : 'Sign in to post a comment.' }"></textarea>
+      <div class="qc-user qc-logged-in" if={ parent.Auth.loggedIn() }>
+        <p>Logged in as { parent.Auth.currentUser().name } (via { capitalize(parent.Auth.currentUser().provider) }). <a href="#" role="button" onclick={ logout }>
+          Log out or switch accounts</a>
+        </p>
+      </div>
+      <div class="qc-user qc-logged-out" if={ !parent.Auth.loggedIn() }>
+        Sign in:
+        <ul class="qc-login-opts">
+          <li each={ name, val in parent.Auth.providers } if={ val.available }>
+            <a href="#" role="button" onclick={ parent.login } class="provider-{ name }">{ parent.capitalize(name) }</a>
+          </li>
+        </ul>
+      </div>
       <button class="submit btn" name="submit" onclick={ send }>Submit</button>
     </fieldset>
-
-  <div class="qc-user qc-logged-in" if={ loggedIn }>
-    <p>Logged in as { currentUser.name } (via { capitalize(currentUser.provider) })<a href="#" role="button" onclick={ logout }>
-      Log out or switch accounts</a>
-    </p>
-  </div>
-  <div class="qc-user qc-logged-out" if={ !loggedIn }>
-    Sign in:
-    <ul class="qc-login-opts">
-      <li each={ name, val in parent.Auth.providers } if={ val.available }>
-        <a href="#" role="button" onclick={ parent.login } class="provider-{ name }">{ parent.capitalize(name) }</a>
-      </li>
-    </ul>
-  </div>
     <hr/>
   </div>
 
@@ -42,10 +41,7 @@
   shrink(e){
     this.height = 1
   }
-
-  this.currentUser = this.parent.Auth.currentUser()
-  this.loggedIn = this.parent.Auth.loggedIn()
-
+  
   login(e){
     this.parent.Auth.login(e.item.name)
   }

@@ -245,7 +245,12 @@
             <p>Cras mattis consectetur purus sit amet fermentum. Sed posuere consectetur est at lobortis.</p>
           </div><!-- /.blog-post -->
 
-
+          <nav>
+            <ul class="pager">
+              <li><a href="#">Previous</a></li>
+              <li><a href="#">Next</a></li>
+            </ul>
+          </nav>
 
 
           <style>
@@ -262,7 +267,8 @@
             font-size: .7em;
           }
           .qc-user{
-            font-size: .8em;
+            font-size: .7em;
+            float: left;
           }
           .avatar {
             width: 3em;
@@ -290,13 +296,6 @@
           </style>
 
           <qcomment></qcomment>
-
-          <nav>
-            <ul class="pager">
-              <li><a href="#">Previous</a></li>
-              <li><a href="#">Next</a></li>
-            </ul>
-          </nav>
 
         </div><!-- /.blog-main -->
 
@@ -359,6 +358,7 @@
         pageID: 'bootstrap',
         bootstrap: true,
         limit: 20,
+        meow: true,
         authMethods: {
           facebook: true,
           twitter: true,

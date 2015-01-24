@@ -5,17 +5,18 @@
     <comment each={ comments } data={ this }/>
   </div>
 
-  this.providers = opts.providers;
-  this.pageID    = opts.pageID;
-  this.firebase  = opts.firebase;
-  this.dataset   = this.firebase.child('comments').child(this.pageID);
-  this.comments  = [];
-  this.Auth      = opts.Auth;
+  this.providers = opts.providers
+  this.pageID    = opts.pageID
+  this.firebase  = opts.firebase
+  this.Auth      = opts.Auth
+
+  this.dataset   = this.firebase.child('comments').child(this.pageID)
+  this.comments  = []
 
   save(comment){
     if(!opts.Auth.currentUser()) throw "Must be logged in to comment";
     this.dataset.push({
-      author: opts.Auth.currentUser(),
+      author: this.Auth.currentUser(),
       time: Date.now(),
       body: comment.body.value
     });
