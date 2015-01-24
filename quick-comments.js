@@ -1,4 +1,4 @@
-/* 2015-01-24 */riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in. <a href="#" onclick="{ logout }">Log out</a></p> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <provider data="{ name }"></provider> </li> </ul> </div>', function(opts) {
+/* 2015-01-24 */riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in. <a href="#" onclick="{ logout }">Log out</a></p> </div> <div if="{ loggedIn }"> <newcomment></newcomment> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <provider data="{ name }"></provider> </li> </ul> </div>', function(opts) {
   this.providers = this.opts.data;
   this.loggedIn = !!this.parent.currentUser();
 
@@ -12,14 +12,18 @@
     this.loggedIn = false;
   }.bind(this)
   this.authHandler = function(err, auth) {
-    if(err) console.error(err);
-    this.loggedIn = !!auth;
+    if(err){
+      console.error(err);
+      return;
+    }
+    firebase.child('users').child(auth.uid).set(auth);
+    this.loggedIn = true;
     this.update();
   }.bind(this)
 })
 
 
-riot.tag('comment', '<div class="qc-comment" name="{ opts.data.id }"> <div class="qc-body">{ opts.data.body }</div> <div class="qc-author"> <a href="mailto:{ opts.data.author.email }">{ opts.data.author.name }</a> </div> <hr></hr> </div>', function(opts) {
+riot.tag('comment', '<div class="qc-comment" name="{ opts.data.id }"> <div class="qc-body">{ opts.data.body }</div> <div class="qc-author"> <div class="avatar"> </div> <a href="{ opts.data.author.url }">{ opts.data.author.name }</a> </div> <hr></hr> </div>', function(opts) {
 })
 
 
@@ -60,7 +64,7 @@ riot.tag('provider', '<a href="#" onclick="{ login }" class="provider-{ opts.dat
 })
 
 
-riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth data="{ opts.providers }"></auth> <newcomment></newcomment> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
+riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth data="{ opts.providers }"></auth> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
   this.providers = opts.providers
   this.pageID    = opts.pageID
   this.firebase  = opts.firebase
@@ -72,12 +76,24 @@ riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth data="{ opts.prov
   this.currentUser = function() {
     var auth = this.firebase.getAuth();
     if(!auth) return null;
+    var profile = auth[auth.provider].cachedUserProfile;
     var info = {};
+    info.name = auth[auth.provider].displayName;
+    info.uid = auth.uid;
     switch(auth.provider){
+      case "facebook":
+        info.avatar = profile.picture.data.url;
+        info.url = profile.link;
+        break;
+      case "twitter":
+        info.avatar = profile.profile_image_url;
+        info.url = profile.url;
+        break;
       case "github":
-      break;
+        info.avatar = profile.avatar_url;
+        info.url = profile.html_url;
+        break;
     }
-    info.auth = auth;
     return info;
   }.bind(this)
 

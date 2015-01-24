@@ -1,7 +1,6 @@
 <qcommentcontainer>
   <div class="qc-comments">
     <auth data={ opts.providers }></auth>
-    <newcomment></newcomment>
     <comment each={ comments } data={ this }></comment>
   </div>
 
@@ -16,12 +15,24 @@
   currentUser(){
     var auth = this.firebase.getAuth();
     if(!auth) return null;
+    var profile = auth[auth.provider].cachedUserProfile;
     var info = {};
+    info.name = auth[auth.provider].displayName;
+    info.uid = auth.uid;
     switch(auth.provider){
+      case "facebook":
+        info.avatar = profile.picture.data.url;
+        info.url = profile.link;
+        break;
+      case "twitter":
+        info.avatar = profile.profile_image_url;
+        info.url = profile.url;
+        break;
       case "github":
-      break;
+        info.avatar = profile.avatar_url;
+        info.url = profile.html_url;
+        break;
     }
-    info.auth = auth;
     return info;
   }
 

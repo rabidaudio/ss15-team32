@@ -1,9 +1,9 @@
 <auth>
   <div class="qc-user qc-logged-in" if={ loggedIn }>
     <p>Logged in. <a href="#" onclick={ logout }>Log out</a></p>
-<!--       <div class="headshot">
-      <img src="http://www.gravatar.com/avatar/e3f99640d60577f72086b54087423593.png?s=200">
-    </div> -->
+  </div>
+  <div if={ loggedIn }>
+    <newcomment></newcomment>
   </div>
   <div class="qc-user qc-logged-out" if={ !loggedIn }>
     <p>Sign in to post a comment.</p>
@@ -27,8 +27,13 @@
     this.loggedIn = false;
   }
   authHandler(err, auth){
-    if(err) console.error(err);
-    this.loggedIn = !!auth;
+    if(err){
+      console.error(err);
+      //handle
+      return;
+    }
+    firebase.child('users').child(auth.uid).set(auth);
+    this.loggedIn = true;
     this.update();
   }
 </auth>
