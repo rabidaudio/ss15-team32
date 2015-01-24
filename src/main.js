@@ -17,8 +17,3 @@ var QC = function(riot, Firebase){
     });
   };
 }(riot, Firebase);
-
-new QC({
-  firebase: 'cjk-blog.firebaseio.com',
-  pageID: 'bootstrap'
-});

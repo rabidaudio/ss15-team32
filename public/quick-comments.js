@@ -2,7 +2,7 @@
 })
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <div class="qc-user qc-logged-out"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ parent.providers }"> <a href="#" class="provicer-{ name }" onclick="{ login }">{ name }</a> </li> </ul> </div> <form>      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }"></textarea>\n <button class="submit" name="submit" onclick="{ send }">Submit</button> </form> <hr></hr> </div>', function(opts) {
+riot.tag('newcomment', '<div class="qc-comment qc-new"> <div class="qc-user qc-logged-out" if="{ !parent.user }"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ parent.providers }"> <a href="#" class="provicer-{ name }" onclick="{ login }">{ name }</a> </li> </ul> </div> <div class="qc-user qc-logged-in" if="{ parent.user }"> { parent.user.name } </div> <form>      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }"></textarea>\n <button class="submit" name="submit" onclick="{ send }">Submit</button> </form> <hr></hr> </div>', function(opts) {
   this.height = 1
 
   this.send = function(e) {
@@ -11,6 +11,8 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <div class="qc-user qc-l
       throw "Can't save spammy comments"
     }else{
       this.parent.save(this)
+      body.value = ""
+      this.shrink()
     }
   }.bind(this)
   
@@ -22,6 +24,10 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <div class="qc-user qc-l
     this.height = 5
   }.bind(this)
 
+  this.shrink = function(e) {
+    this.height = 1
+  }.bind(this)
+
 })
 
 
@@ -30,18 +36,11 @@ riot.tag('qcommentcontainer', '<div class="qc-comments"> <newcomment></newcommen
   this.providers = opts.providers
   this.pageID    = opts.pageID
   this.FB        = opts.FB
+  this.dataset   = this.FB.child('comments').child(this.pageID)
   this.comments  = []
 
   this.user = {name: "bob", email: "abc@123.xyz"} //todo
 
-  this.dataset   = this.FB.child('comments').child(this.pageID)  
-
-  this.updateComments = function(snapshot) {
-    var comment = snapshot.val()
-    comment.id = snapshot.key()
-    this.comments.push(comment)
-    this.update()
-  }.bind(this)
 
   this.save = function(comment) {
     this.dataset.push({
@@ -51,7 +50,38 @@ riot.tag('qcommentcontainer', '<div class="qc-comments"> <newcomment></newcommen
     })
   }.bind(this)
 
-  this.dataset.on("child_added", this.updateComments)
+  this.getComment = function(snapshot) {
+    var comment = snapshot.val()
+    comment.id = snapshot.key()
+    return comment
+  }.bind(this)
+  this.addComment = function(snapshot) {
+    var comment = this.getComment(snapshot)
+    this.comments.unshift(comment)
+    return this.update()
+  }.bind(this)
+  this.updateComment = function(snapshot) {
+    var comment = this.getComment(snapshot)
+    for(var i = this.comments.length; i-->0;){
+      if(this.comments[i].id === comment.id){
+        this.comments[i] = comment;
+        return this.update()
+      }
+    }
+  }.bind(this)
+  this.removeComment = function(snapshot) {
+    var comment = this.getComment(snapshot)
+    for(var i = this.comments.length; i-->0;){
+      if(this.comments[i].id === comment.id){
+        this.comments.splice(i, 1);
+        return this.update()
+      }
+    }
+  }.bind(this)
+
+  this.dataset.on("child_added", this.addComment)
+  this.dataset.on("child_changed", this.updateComment)
+  this.dataset.on("child_removed", this.removeComment)
   
 })
 
@@ -75,8 +105,3 @@ var QC = function(riot, Firebase){
     });
   };
 }(riot, Firebase);
-
-new QC({
-  firebase: 'cjk-blog.firebaseio.com',
-  pageID: 'bootstrap'
-});
