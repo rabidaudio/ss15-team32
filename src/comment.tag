@@ -1,15 +1,15 @@
 <comment>
-  <div class="qc-comment" id="comment/{ id }">
+  <div class="qc-comment" id="comment/{id}">
     <div class="avatar">
-      <a href="{ author.url }"><img src="{ author.avatar }"></a>
+      <a href="{author.url}"><img src="{author.avatar}"></a>
     </div>
     <div class="qc-header">
-      <a href="{ author.url }" class="author text-muted">{ author.name }</a> | 
-      <a href="#comment/{ id }" class="timestamp text-muted" title="{ new Date(opts.data.time).toLocaleString() }">{ vagueTime }</a>
+      <a href="{author.url}" class="author text-muted">{author.name}</a> | 
+      <a href="#comment/{id}" class="timestamp text-muted" title="{new Date(opts.data.time).toLocaleString()}">{vagueTime}</a>
       <a href="#" role="button" class="edit text-muted" if={false}>Edit</a>
     </div>
     <div class="qc-body">
-      <p each={ p in paragraphs }>{p}</p>
+      <p each={p in paragraphs}>{p}</p>
     </div>
     <hr/>
   </div>

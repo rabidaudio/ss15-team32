@@ -57,20 +57,21 @@ var QC = function(riot){
     };
 
     var self = this;
+    FB.onAuth(function(auth){
+        if(!auth) return self.trigger('logout');
+        FB.child('users').child(auth.uid).set(auth);
+        return self.trigger('login', auth);
+    });
     this.login = function(method){
       if(this.currentUser()) throw "Already logged in";
       var p = this.providers[method];
       if(!p || p.available===false) throw "Provider unavailable";
       FB[p.type || "authWithOAuthPopup"](method, function(err, auth){
         if(err) throw err;
-        if(!auth) return self.trigger('logout');
-        FB.child('users').child(auth.uid).set(auth);
-        return self.trigger('login', auth);
       });
     };
     this.logout = function(){
       FB.unauth();
-      this.trigger('logout');
     };
   }
 

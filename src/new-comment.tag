@@ -1,21 +1,21 @@
 <newcomment>
   <div class="qc-comment qc-new">
-    <fieldset disabled={ parent.Auth.loggedIn() ? undefined : true }>
-      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus={ grow } placeholder="{ parent.Auth.loggedIn() ? 'Leave a comment' : 'Sign in to post a comment.' }"></textarea>
-      <div class="qc-user qc-logged-in" if={ parent.Auth.loggedIn() }>
-        <p>Logged in as { parent.Auth.currentUser().name } (via { capitalize(parent.Auth.currentUser().provider) }). <a href="#" role="button" onclick={ logout }>
+    <fieldset disabled={parent.Auth.loggedIn() ? undefined : true}>
+      <textarea rows="{height}" class="gc-new-body form-control" name="body" onfocus={grow} placeholder={parent.Auth.loggedIn() ? 'Leave a comment' : 'Sign in to post a comment.'}></textarea>
+      <div class="qc-user qc-logged-in" if={parent.Auth.loggedIn()}>
+        <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick={logout}>
           Log out or switch accounts</a>
         </p>
       </div>
-      <div class="qc-user qc-logged-out" if={ !parent.Auth.loggedIn() }>
+      <div class="qc-user qc-logged-out" if={!parent.Auth.loggedIn()}>
         Sign in:
         <ul class="qc-login-opts">
-          <li each={ name, val in parent.Auth.providers } if={ val.available }>
-            <a href="#" role="button" onclick={ parent.login } class="provider-{ name }">{ parent.capitalize(name) }</a>
+          <li each={name, val in parent.Auth.providers} if={val.available}>
+            <a href="#" role="button" onclick={parent.login} class="provider-{name}">{parent.capitalize(name)}</a>
           </li>
         </ul>
       </div>
-      <button class="submit btn" name="submit" onclick={ send }>Submit</button>
+      <button class="submit btn" name="submit" onclick={send}>Submit</button>
     </fieldset>
     <hr/>
   </div>
@@ -41,7 +41,7 @@
   shrink(e){
     this.height = 1
   }
-  
+
   login(e){
     this.parent.Auth.login(e.item.name)
   }
@@ -50,10 +50,13 @@
     this.parent.Auth.logout()
   }
 
-  var self = this
-  this.parent.Auth.on('login logout', function(auth){
-    self.update()
-  })
+  change(type, auth){
+    this.update()
+  }
+
+  console.log(this)
+
+  this.parent.Auth.on("login logout", this.change)
 
   capitalize(s){
     return s.split(" ").map(function(e){ var a = e.split(""); a.unshift(a.shift().toUpperCase()); return a.join("") }).join(" ")

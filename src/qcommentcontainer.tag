@@ -14,46 +14,46 @@
   this.comments  = []
 
   save(comment){
-    if(!opts.Auth.currentUser()) throw "Must be logged in to comment";
+    if(!opts.Auth.currentUser()) throw "Must be logged in to comment"
     this.dataset.push({
       author: this.Auth.currentUser(),
       time: Date.now(),
       body: comment.body.value
-    });
+    })
   }
 
   getComment(snapshot){
-    var comment = snapshot.val();
-    comment.id = snapshot.key();
-    return comment;
+    var comment = snapshot.val()
+    comment.id = snapshot.key()
+    return comment
   }
   addComment(snapshot){
-    var comment = this.getComment(snapshot);
-    this.comments.unshift(comment);
-    return this.update();
+    var comment = this.getComment(snapshot)
+    this.comments.unshift(comment)
+    return this.update()
   }
   updateComment(snapshot){
-    var comment = this.getComment(snapshot);
-    for(var i = this.comments.length; i-->0;){
+    var comment = this.getComment(snapshot)
+    for(var i = this.comments.length;i-->0;){
       if(this.comments[i].id === comment.id){
-        this.comments[i] = comment;
-        return this.update();
+        this.comments[i] = comment
+        return this.update()
       }
     }
   }
   removeComment(snapshot){
-    var comment = this.getComment(snapshot);
-    for(var i = this.comments.length; i-->0;){
+    var comment = this.getComment(snapshot)
+    for(var i = this.comments.length;i-->0;){
       if(this.comments[i].id === comment.id){
-        this.comments.splice(i, 1);
-        return this.update();
+        this.comments.splice(i,1)
+        return this.update()
       }
     }
   }
 
-  var query = this.dataset.orderByChild('time').limitToFirst(opts.limit);
-  query.on("child_added",   this.addComment);
-  query.on("child_changed", this.updateComment);
-  query.on("child_removed", this.removeComment);
+  var query = this.dataset.orderByChild('time').limitToFirst(opts.limit)
+  query.on("child_added",   this.addComment)
+  query.on("child_changed", this.updateComment)
+  query.on("child_removed", this.removeComment)
   
 </qcomment>
