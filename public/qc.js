@@ -45,6 +45,10 @@ function Comment(message, user){
   }
 }
 
+var providers = {
+  facebook: {}, //etc
+}
+
 Comment.prototype._checkSpam = function(callback){
   spamFree = true; //TODO
   callback(spamFree);
@@ -57,3 +61,15 @@ Comment.prototype.save = function(callback){
     FB.child('comments').child(pageID).push(comment, callback);
   });
 };
+
+riot.tag('qcomment', '<div class="qc-body">{ body }</div><div class="qc-author"><a href="mailto:{ author.email }">{ author.name }</a></div><hr/>', function(data){
+  this.body   = data.body;
+  this.author = data.author;
+});
+riot.mount('qcomment', {
+  body: "bullshit",
+  author: {
+    name: "debbie downer",
+    email: "d@q.org"
+  }
+});
