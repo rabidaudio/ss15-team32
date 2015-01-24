@@ -23,24 +23,20 @@ riot.tag('comment', '<div class="qc-body">{ body }</div> <div class="qc-author">
 })
 
 
-riot.tag('newcomment', '<div class="qc-user qc-logged-out"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ parent.providers }"> <a href="#" class="provicer-{ name }" onclick="{ login }">{ name }</a> </li> </ul> </div> <form onsubmit="{ comment }">    <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }"></textarea>\n <button class="" name="submit">Submit</button> </form> <hr></hr>', function(opts) {
+riot.tag('newcomment', '<div class="qc-user qc-logged-out"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ parent.providers }"> <a href="#" class="provicer-{ name }" onclick="{ login }">{ name }</a> </li> </ul> </div> <form>    <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }"></textarea>\n <button class="submit" name="submit" onclick="{ send }">Submit</button> </form> <hr></hr>', function(opts) {
   this.height = 1
 
-  this.comment = function(e) {
+  this.send = function(e) {
 
     if(!this.spamFree){
       throw "Can't save spammy comments"
     }else{
       console.log({
         user: parent.user,
-        body: body.value,
+        body: this.body.value,
         time: (new Date()).toISOString()
       })
     }
-    debugger;
-    e.preventDefault()
-
-    return false
   }.bind(this)
   
   this.spamFree = function() {
