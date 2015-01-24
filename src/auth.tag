@@ -1,24 +1,30 @@
 <auth>
   <div class="qc-user qc-logged-in" if={ loggedIn }>
-    <p>Logged in. <a href="#" onclick={ logout }>Log out</a></p>
-  </div>
-  <div if={ loggedIn }>
-    <newcomment></newcomment>
+    <p>Logged in as { currentUser().name } (via { capitalize(currentUser().provider) })<a href="#" role="button" onclick={ logout }>
+      Log out or switch accounts</a>
+    </p>
   </div>
   <div class="qc-user qc-logged-out" if={ !loggedIn }>
-    <p>Sign in to post a comment.</p>
+    Sign in:
     <ul class="qc-login-opts">
       <li each={ name, val in providers } if={ val.available }>
-        <a href="#" onclick={ parent.login } class="provider-{ name }">{ name }</a>
+        <a href="#" role="button" onclick={ parent.login } class="provider-{ name }">{ parent.capitalize(name) }</a>
       </li>
     </ul>
-    <hr/>
   </div>
+  <newcomment></newcomment>
 
-  this.providers = this.opts.data;
-  this.loggedIn = !!this.parent.currentUser();
+  capitalize(sentence){
+    return sentence.split(" ").map(function(e){ var a = e.split(""); a.unshift(a.shift().toUpperCase()); return a.join(""); }).join(" ");
+  }
+  currentUser(){
+    return this.parent.currentUser();
+  }
 
   var firebase = this.parent.firebase;
+
+  this.providers = this.opts.data;
+  this.loggedIn = !!this.currentUser();
 
   login(e){
     firebase.authWithOAuthPopup(e.item.name, this.authHandler);
@@ -33,6 +39,7 @@
       //handle
       return;
     }
+    console.log(this)
     firebase.child('users').child(auth.uid).set(auth);
     this.loggedIn = true;
     this.update();

@@ -1,9 +1,9 @@
 <newcomment>
   <div class="qc-comment qc-new">
-    <form>
-      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus={ grow }></textarea>
+    <fieldset disabled={ parent.loggedIn ? undefined : true }>
+      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus={ grow } placeholder="{ parent.loggedIn ? null : 'Sign in to post a comment.' }"></textarea>
       <button class="submit" name="submit" onclick={ send }>Submit</button>
-    </form>
+    </fieldset>
     <hr/>
   </div>
 

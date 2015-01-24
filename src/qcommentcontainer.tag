@@ -19,6 +19,7 @@
     var info = {};
     info.name = auth[auth.provider].displayName;
     info.uid = auth.uid;
+    info.provider = auth.provider;
     switch(auth.provider){
       case "facebook":
         info.avatar = profile.picture.data.url;

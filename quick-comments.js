@@ -21,70 +21,6 @@
     },
 
     languages = {
-        br: {
-            year: [ 'ano', 'anos' ],
-            month: [ 'mês', 'meses' ],
-            week: [ 'semana', 'semanas' ],
-            day: [ 'dia', 'dias' ],
-            hour: [ 'hora', 'horas' ],
-            minute: [ 'minuto', 'minutos' ],
-
-            past: function (vagueTime, unit) {
-                return vagueTime + ' ' + unit + ' atrás';
-            },
-
-            future: function (vagueTime, unit) {
-                return 'em ' + vagueTime + ' ' + unit;
-            },
-
-            defaults: {
-                past: 'agora mesmo',
-                future: 'em breve'
-            }
-        }
-,
-        da: {
-            year: [ 'år', 'år' ],
-            month: [ 'måned', 'måneder' ],
-            week: [ 'uge', 'uger' ],
-            day: [ 'dag', 'dage' ],
-            hour: [ 'time', 'timer' ],
-            minute: [ 'minut', 'minutter' ],
-        
-            past: function (vagueTime, unit) {
-                return vagueTime + ' ' + unit + ' siden';
-            },
-        
-            future: function (vagueTime, unit) {
-                return 'om ' + vagueTime + ' ' + unit;
-            },
-        
-            defaults: {
-                past: 'lige nu',
-                future: 'snart'
-            }
-        },
-        de: {
-            year: [ 'Jahr', 'Jahren' ],
-            month: [ 'Monat', 'Monaten' ],
-            week: [ 'Woche', 'Wochen' ],
-            day: [ 'Tag', 'Tagen' ],
-            hour: [ 'Stunde', 'Stunden' ],
-            minute: [ 'Minute', 'Minuten' ],
-        
-            past: function (vagueTime, unit) {
-                return 'vor ' + vagueTime + ' ' + unit;
-            },
-        
-            future: function (vagueTime, unit) {
-                return 'in ' + vagueTime + ' ' + unit;
-            },
-        
-            defaults: {
-                past: 'jetzt gerade',
-                future: 'bald'
-            }
-        },
         en: {
             year: [ 'year', 'years' ],
             month: [ 'month', 'months' ],
@@ -105,112 +41,7 @@
                 past: 'just now',
                 future: 'soon'
             }
-        },
-        fr: {
-            year: [ 'an', 'ans' ],
-            month: [ 'mois', 'mois' ],
-            week: [ 'semaine', 'semaines' ],
-            day: [ 'jour', 'jours' ],
-            hour: [ 'heure', 'heures' ],
-            minute: [ 'minute', 'minutes' ],
-        
-            past: function (vagueTime, unit) {
-                return 'il y a ' + vagueTime + ' ' + unit;
-            },
-        
-            future: function (vagueTime, unit) {
-                return 'dans ' + vagueTime + ' ' + unit;
-            },
-        
-            defaults: {
-                past: 'tout de suite',
-                future: 'bientôt'
-            }
-        },
-		jp: {
-			year: [ '年', '年' ],
-				month: [ 'ヶ月', 'ヶ月' ],
-				week: [ '週間', '週間' ],
-				day: [ '日', '日' ],
-				hour: [ '時間', '時間' ],
-				minute: [ '分', '分' ],
-
-				past: function (vagueTime, unit) {
-				return vagueTime + ' ' + unit + '前';
-			},
-
-			future: function (vagueTime, unit) {
-				return vagueTime + ' ' + unit + '後';
-			},
-
-			defaults: {
-				past: '今',
-					future: 'すぐに'
-			}
-		},
-		ko: {
-			year: [ '년', '년' ],
-				month: [ '개월', '개월' ],
-				week: [ '주', '주' ],
-				day: [ '일', '일' ],
-				hour: [ '시간', '시간' ],
-				minute: [ '분', '분' ],
-
-				past: function (vagueTime, unit) {
-				return vagueTime + ' ' + unit + ' 전';
-			},
-
-			future: function (vagueTime, unit) {
-				return vagueTime + ' ' + unit + ' 후';
-			},
-
-			defaults: {
-				past: '지금',
-					future: '곧'
-			}
-  		},
-        nl: {
-            year: [ 'jaar', 'jaar' ],
-            month: [ 'maand', 'maanden' ],
-            week: [ 'week', 'weken' ],
-            day: [ 'dag', 'dagen' ],
-            hour: [ 'uur', 'uur' ],
-            minute: [ 'minuut', 'minuten' ],
-        
-            past: function (vagueTime, unit) {
-                return vagueTime + ' ' + unit + ' geleden';
-            },
-        
-            future: function (vagueTime, unit) {
-                return 'over ' + vagueTime + ' ' + unit;
-            },
-        
-            defaults: {
-                past: 'juist nu',
-                future: 'binnenkort'
-            }
-        },
-		zh: {
-			year: [ '年', '年' ],
-				month: [ '个月', '个月' ],
-				week: [ '周', '周' ],
-				day: [ '天', '天' ],
-				hour: [ '小时', '小时' ],
-				minute: [ '分钟', '分钟' ],
-
-				past: function (vagueTime, unit) {
-				return vagueTime + ' ' + unit + ' 之前';
-			},
-
-			future: function (vagueTime, unit) {
-				return 'in ' + vagueTime + ' ' + unit;
-			},
-
-			defaults: {
-				past: '刚刚',
-					future: '马上'
-			}
-		}
+        }
     },
 
     defaultLanguage = 'en',
@@ -322,11 +153,18 @@
 
 
 
-riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in. <a href="#" onclick="{ logout }">Log out</a></p> </div> <div if="{ loggedIn }"> <newcomment></newcomment> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <a href="#" onclick="{ parent.login }" class="provider-{ name }">{ name }</a> </li> </ul> <hr></hr> </div>', function(opts) {
-  this.providers = this.opts.data;
-  this.loggedIn = !!this.parent.currentUser();
+riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in as { currentUser().name } (via { capitalize(currentUser().provider) })<a href="#" role="button" onclick="{ logout }"> Log out or switch accounts</a> </p> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> Sign in: <ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <a href="#" role="button" onclick="{ parent.login }" class="provider-{ name }">{ parent.capitalize(name) }</a> </li> </ul> </div> <newcomment></newcomment>', function(opts) {
+  this.capitalize = function(sentence) {
+    return sentence.split(" ").map(function(e){ var a = e.split(""); a.unshift(a.shift().toUpperCase()); return a.join(""); }).join(" ");
+  }.bind(this)
+  this.currentUser = function() {
+    return this.parent.currentUser();
+  }.bind(this)
 
   var firebase = this.parent.firebase;
+
+  this.providers = this.opts.data;
+  this.loggedIn = !!this.currentUser();
 
   this.login = function(e) {
     firebase.authWithOAuthPopup(e.item.name, this.authHandler);
@@ -340,6 +178,7 @@ riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged
       console.error(err);
       return;
     }
+    console.log(this)
     firebase.child('users').child(auth.uid).set(auth);
     this.loggedIn = true;
     this.update();
@@ -347,13 +186,13 @@ riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged
 })
 
 
-riot.tag('comment', '<div class="qc-comment" id="comment/{ data.id }"> <div class="avatar"> <a href="{ data.author.url }"><img src="{ data.author.avatar }"></a> </div> <div class="qc-header"> <a href="{ data.author.url }" class="author">{ data.author.name }</a> <a href="#comment/{ data.id }" class="timestamp" title="{ new Date(data.time).toLocaleString() }">{ vagueTime }</a> </div> <div class="qc-body">{ data.body }</div> <hr></hr> </div>', function(opts) {
+riot.tag('comment', '<div class="qc-comment" id="comment/{ data.id }"> <div class="avatar"> <a href="{ data.author.url }"><img src="{ data.author.avatar }"></a> </div> <div class="qc-header"> <a href="{ data.author.url }" class="author text-muted">{ data.author.name }</a> |  <a href="#comment/{ data.id }" class="timestamp text-muted" title="{ new Date(data.time).toLocaleString() }">{ vagueTime }</a> </div> <div class="qc-body">{ data.body }</div> <hr></hr> </div>', function(opts) {
   this.data = opts.data
-  this.vagueTime = vagueTime.get({to: this.data.time})
+  this.vagueTime = vagueTime.get({to: this.data.time}) //todo enable language support
 })
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <form>      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }"></textarea>\n <button class="submit" name="submit" onclick="{ send }">Submit</button> </form> <hr></hr> </div>', function(opts) {
+riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ parent.loggedIn ? undefined : true }">      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }" placeholder="{ parent.loggedIn ? null : \'Sign in to post a comment.\' }"></textarea>\n <button class="submit" name="submit" onclick="{ send }">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
   this.height = 1
 
   this.send = function(e) {
@@ -399,6 +238,7 @@ riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth data="{ opts.prov
     var info = {};
     info.name = auth[auth.provider].displayName;
     info.uid = auth.uid;
+    info.provider = auth.provider;
     switch(auth.provider){
       case "facebook":
         info.avatar = profile.picture.data.url;
