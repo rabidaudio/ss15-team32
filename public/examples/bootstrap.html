@@ -283,9 +283,13 @@
             bottom: 0px;
             position: absolute;
           }
+          .submit {
+            margin: 5px 0px;
+            float: right;
+          }
           </style>
 
-          <qcommentcontainer/>
+          <qcommentcontainer></qcommentcontainer>
 
           <nav>
             <ul class="pager">
@@ -347,12 +351,13 @@
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/js/bootstrap.min.js"></script>
 
     <script src="https://cdn.firebase.com/js/client/2.1.1/firebase.js"></script>
-    <script src="lib/quick-comments.js"></script>
+    <script src="../lib/quick-comments.js"></script>
     <script>
       var FB = new Firebase('https://cjk-blog.firebaseio.com');
       new QC({
         firebase: FB,
         pageID: 'bootstrap',
+        bootstrap: true,
         // limit: 2
         authMethods: {
           facebook: true,
