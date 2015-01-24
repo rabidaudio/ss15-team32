@@ -1,6 +1,6 @@
 var FB = new Firebase('cjk-blog.firebaseio.com');
 
-var pageID = pageID || window.location.pathname;
+var pageID = pageID || encodeURIComponent(window.location.pathname);
 
 //ref.child("users").child(authData.uid).set(authData);
 
@@ -31,29 +31,29 @@ $('.gc-new-body').focus(function(){
 });
 $('.qc-new .submit').click(function(){
   var c = new Comment($('.gc-new-body').val(), {cats: "meow"}, pageID);
-  c.save();
+  c.save(function(err){
+    if(err) throw err;
+  });
 });
 
-function Comment(message, user, pageID){
-  this.date = new Date();
+function Comment(message, user){
+  this.date = (new Date()).toISOString();
   this.message = message;
-  this.pageID = pageID;
   this.user = user;
   if(!user){
     //throw some error
   }
-
-  var spamFree = null; //null before test, true or false after test
 }
 
 Comment.prototype._checkSpam = function(callback){
-  this.spamFree = true; //TODO
-  callback(this.spamFree);
+  spamFree = true; //TODO
+  callback(spamFree);
 };
-
 Comment.prototype.save = function(callback){
+  callback = callback || new Function();
+  var comment = this;
   this._checkSpam(function(spamFree){
-    if(!this.spamFree) return callback("Can't save spammy comments");
-    FB.child('comments').child(pageID).push(this, callback);
+    if(!spamFree) return callback("Can't save spammy comments");
+    FB.child('comments').child(pageID).push(comment, callback);
   });
 };
