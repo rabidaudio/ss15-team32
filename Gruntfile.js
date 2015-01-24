@@ -104,7 +104,7 @@ module.exports = function(grunt) {
     },
     copy: {
       toServer: {
-        src: ['*.js'],
+        src: ['quick-comments.js', 'quick-comments.min.js'],
         dest: 'public/'
       }
     }

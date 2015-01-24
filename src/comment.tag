@@ -1,11 +1,9 @@
-<comment class="qc-comment">
-  <div class="qc-body">{ body }</div>
-  <div class="qc-author">
-    <a href="mailto:{ author.email }">{ author.name }</a>
+<comment>
+  <div class="qc-comment" name={ opts.data.id }>
+    <div class="qc-body">{ opts.data.body }</div>
+    <div class="qc-author">
+      <a href="mailto:{ opts.data.author.email }">{ opts.data.author.name }</a>
+    </div>
+    <hr/>
   </div>
-  <hr/>
-
-  this.body   = opts.body;
-  this.author = opts.author;
-
 </comment>

@@ -1,17 +1,33 @@
-<qcommentcontainer class="qc-comments">
-  <newcomment></newcomment>
-  <comment each={ this.comments }></comment>
+<qcommentcontainer>
+  <div class="qc-comments">
+    <newcomment></newcomment>
+    <comment each={ comments } data={ this }></comment>
+  </div>
 
   this.providers = opts.providers
   this.pageID    = opts.pageID
   this.FB        = opts.FB
+  this.comments  = []
 
-  this.user = opts.user //todo
+  this.user = {name: "bob", email: "abc@123.xyz"} //todo
 
-  this.dataset   = FB.child('comments').child(pageID)
+  this.dataset   = this.FB.child('comments').child(this.pageID)  
 
-  this.dataset.on("value", function(snapshot){
-    this.comments = snapshot.val();
-  });
+  updateComments(snapshot){
+    var comment = snapshot.val()
+    comment.id = snapshot.key()
+    this.comments.push(comment)
+    this.update()
+  }
+
+  save(comment){
+    this.dataset.push({
+      author: this.user,
+      time: (new Date()).toISOString(),
+      body: comment.body.value
+    })
+  }
+
+  this.dataset.on("child_added", this.updateComments)
   
 </qcommentcontainer>

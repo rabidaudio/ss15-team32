@@ -1,31 +1,24 @@
-var FB = new Firebase('cjk-blog.firebaseio.com');
+var QC = function(riot, Firebase){
+  if(!riot) throw "Riot.js is required";
+  if(!Firebase) throw "Firebase is required";
 
-var pageID = pageID || encodeURIComponent(window.location.pathname);
+  return function(opts){
+    riot.mount('qcommentcontainer', {
+      FB:       new Firebase(opts.firebase),
+      pageID:   opts.pageID || encodeURIComponent(window.location.pathname),
+      providers: [
+        {
+          name: "facebook",
+          login: function(){
+            console.log("yay!");
+          }
+        },
+      ]
+    });
+  };
+}(riot, Firebase);
 
-riot.mount('qcommentcontainer', {
-  providers: [
-    {
-      name: "facebook",
-      login: function(){
-        console.log("yay!");
-      }
-    },
-  ],
-  pageID: pageID,
-  comments: [
-    {
-      body: "bullshit",
-      author: {
-        name: "debbie downer",
-        email: "d@q.org"
-      }
-    },
-    {
-      body: "cool, yo",
-      author: {
-        name: "somebody",
-        email: "d@q.org"
-      }
-    },
-  ]
+new QC({
+  firebase: 'cjk-blog.firebaseio.com',
+  pageID: 'bootstrap'
 });
