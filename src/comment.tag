@@ -5,11 +5,12 @@
     </div>
     <div class="qc-header">
       <a href="{ data.author.url }" class="author">{ data.author.name }</a>
-      <a href="#comment/{ data.id }" class="timestamp">{ new Date(data.time).toLocaleString() }</a>
+      <a href="#comment/{ data.id }" class="timestamp" title="{ new Date(data.time).toLocaleString() }">{ vagueTime }</a>
     </div>
     <div class="qc-body">{ data.body }</div>
     <hr/>
   </div>
 
   this.data = opts.data
+  this.vagueTime = vagueTime.get({to: this.data.time})
 </comment>

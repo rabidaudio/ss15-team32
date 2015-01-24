@@ -108,7 +108,7 @@ module.exports = function(grunt) {
         dest: 'public/'
       },
       includeDependencies: {
-        src: ['bower_components/vagueTime.js/lib/vagueTime.js'],
+        src: ['bower_components/vagueTime.js/lib/vagueTime-en.js'],
         dest: '.tmp/includes/'
       }
     }

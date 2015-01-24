@@ -347,8 +347,9 @@ riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged
 })
 
 
-riot.tag('comment', '<div class="qc-comment" id="comment/{ data.id }"> <div class="avatar"> <a href="{ data.author.url }"><img src="{ data.author.avatar }"></a> </div> <div class="qc-header"> <a href="{ data.author.url }" class="author">{ data.author.name }</a> <a href="#comment/{ data.id }" class="timestamp">{ new Date(data.time).toLocaleString() }</a> </div> <div class="qc-body">{ data.body }</div> <hr></hr> </div>', function(opts) {
+riot.tag('comment', '<div class="qc-comment" id="comment/{ data.id }"> <div class="avatar"> <a href="{ data.author.url }"><img src="{ data.author.avatar }"></a> </div> <div class="qc-header"> <a href="{ data.author.url }" class="author">{ data.author.name }</a> <a href="#comment/{ data.id }" class="timestamp" title="{ new Date(data.time).toLocaleString() }">{ vagueTime }</a> </div> <div class="qc-body">{ data.body }</div> <hr></hr> </div>', function(opts) {
   this.data = opts.data
+  this.vagueTime = vagueTime.get({to: this.data.time})
 })
 
 
