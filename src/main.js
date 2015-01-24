@@ -1,29 +1,82 @@
 var QC = function(riot){
 
   var providers = {
-    facebook: {
-      type: "oauth",
-      available: true
-    },
-    github: {
-      type: "oauth",
-      available: true
-    },
-    twitter: {
-      type: "oauth",
-      available: true,
-    },
-    google: {
-      type: "oauth",
-      available: true,
-    },
+    facebook: {},
+    github: {},
+    twitter: {},
+    google: {},
     password: {
+      type: "authWithPassword",
       available: false, //todo unimplemented
     },
     anonymous: {
+      type: "authAnonymously",
+      available: false, //todo unimplemented
+    },
+    custom: {
+      type: 'authWithCustomToken',
       available: false, //todo unimplemented
     }
   };
+
+  function Auth(FB, providers){
+    riot.observable(this);
+    this.providers = providers;
+
+    this.currentUser = function(){
+      var auth = FB.getAuth();
+      if(!auth) return null;
+      var profile = auth[auth.provider].cachedUserProfile;
+      var info = {};
+      info.name = auth[auth.provider].displayName;
+      info.uid = auth.uid;
+      info.provider = auth.provider;
+      switch(auth.provider){
+        case "facebook":
+          info.avatar = profile.picture.data.url;
+          info.url = profile.link;
+          break;
+        case "twitter":
+          info.avatar = profile.profile_image_url;
+          info.url = profile.url;
+          break;
+        case "github":
+          info.avatar = profile.avatar_url;
+          info.url = profile.html_url;
+          break;
+        case "google":
+          info.avatar = profile.picture;
+          info.url = profile.link;
+          break;
+      }
+      return info;
+    };
+
+    this.loggedIn = function(){
+      return !!FB.getAuth();
+    };
+
+    var self = this;
+    this.login = function(method){
+      if(this.currentUser()) throw "Already logged in";
+      var p = this.providers[method];
+      if(!p || p.available===false) throw "Provider unavailable";
+      FB[p.type || "authWithOAuthPopup"](method, function(err, auth){
+        if(err) throw err;
+        if(!auth) return self.trigger('logout');
+        FB.child('users').child(auth.uid).set(auth);
+        return self.trigger('login', auth);
+      });
+    };
+    this.logout = function(){
+      FB.unauth();
+      this.trigger('logout');
+    };
+  }
+
+  // var a=  new Auth(FB, providers)
+  // a.on('login', function(e){ console.log(["login listen", e]); });
+  // a.on('logout', function(){console.log("bark");});
 
   return function(opts){
     if(!opts.firebase) throw "Firebase is required";
@@ -40,7 +93,7 @@ var QC = function(riot){
       }
     }
 
-    opts.providers = providers;
+    opts.Auth = new Auth(opts.firebase, providers);
     riot.mount('qcomment', opts);
   };
 }(window.riot);

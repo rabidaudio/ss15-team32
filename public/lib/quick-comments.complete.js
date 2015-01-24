@@ -405,50 +405,19 @@ var riot={version:"v2.0.1"};"use strict";riot.observable=function(e){var t={};e.
 
 
 
-riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in as { currentUser().name } (via { capitalize(currentUser().provider) })<a href="#" role="button" onclick="{ logout }"> Log out or switch accounts</a> </p> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> Sign in: <ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <a href="#" role="button" onclick="{ parent.login }" class="provider-{ name }">{ parent.capitalize(name) }</a> </li> </ul> </div> <newcomment></newcomment>', function(opts) {
-  this.capitalize = function(sentence) {
-    return sentence.split(" ").map(function(e){ var a = e.split(""); a.unshift(a.shift().toUpperCase()); return a.join(""); }).join(" ");
-  }.bind(this)
-  this.currentUser = function() {
-    return this.parent.currentUser();
-  }.bind(this)
-
-  var firebase = this.parent.firebase;
-
-  this.providers = this.opts.data;
-  this.loggedIn = !!this.currentUser();
-
-  this.login = function(e) {
-    firebase.authWithOAuthPopup(e.item.name, this.authHandler);
-  }.bind(this)
-  this.logout = function() {
-    firebase.unauth();
-    this.update({loggedIn: false});
-  }.bind(this)
-  this.authHandler = function(err, auth) {
-    if(err){
-      console.error(err);
-      return;
-    }
-    firebase.child('users').child(auth.uid).set(auth);
-    this.update({loggedIn: true});
-  }.bind(this)
-})
-
-
-riot.tag('comment', '<div class="qc-comment" id="comment/{ data.id }"> <div class="avatar"> <a href="{ data.author.url }"><img src="{ data.author.avatar }"></a> </div> <div class="qc-header"> <a href="{ data.author.url }" class="author text-muted">{ data.author.name }</a> |  <a href="#comment/{ data.id }" class="timestamp text-muted" title="{ new Date(data.time).toLocaleString() }">{ vagueTime }</a> </div> <div class="qc-body">{ data.body }</div> <hr></hr> </div>', function(opts) {
+riot.tag('comment', '<div class="qc-comment" id="comment/{ data.id }"> <div class="avatar"> <a href="{ data.author.url }"><img src="{ data.author.avatar }"></a> </div> <div class="qc-header"> <a href="{ data.author.url }" class="author text-muted">{ data.author.name }</a> |  <a href="#comment/{ data.id }" class="timestamp text-muted" title="{ new Date(data.time).toLocaleString() }">{ vagueTime }</a> <a href="#" role="button" class="edit text-muted" if="{false}">Edit</a> </div> <div class="qc-body">{ data.body }</div> <hr></hr> </div>', function(opts) {
   this.data = opts.data
   this.vagueTime = vagueTime.get({to: this.data.time}) //todo enable language support
 })
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ parent.loggedIn ? undefined : true }">      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }" placeholder="{ parent.loggedIn ? \'Leave a comment\' : \'Sign in to post a comment.\' }"></textarea>\n <button class="submit btn" name="submit" onclick="{ send }">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
+riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ loggedIn ? undefined : true }">      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }" placeholder="{ loggedIn ? \'Leave a comment\' : \'Sign in to post a comment.\' }"></textarea>\n <button class="submit btn" name="submit" onclick="{ send }">Submit</button> </fieldset> <div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in as { currentUser.name } (via { capitalize(currentUser.provider) })<a href="#" role="button" onclick="{ logout }"> Log out or switch accounts</a> </p> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> Sign in: <ul class="qc-login-opts"> <li each="{ name, val in parent.Auth.providers }" if="{ val.available }"> <a href="#" role="button" onclick="{ parent.login }" class="provider-{ name }">{ parent.capitalize(name) }</a> </li> </ul> </div> <hr></hr> </div>', function(opts) {
   this.height = 1
 
   this.send = function(e) {
     if(!this.spamFree()) throw "Can't save spammy comments"
 
-    this.parent.parent.save(this)
+    this.parent.save(this)
     this.body.value = ""
     this.shrink()
   }.bind(this)
@@ -465,53 +434,42 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{ 
     this.height = 1
   }.bind(this)
 
+  this.currentUser = this.parent.Auth.currentUser()
+  this.loggedIn = this.parent.Auth.loggedIn()
+
+  this.login = function(e) {
+    this.parent.Auth.login(e.item.name)
+  }.bind(this)
+
+  this.logout = function(e) {
+    this.parent.Auth.logout()
+  }.bind(this)
+
+  var self = this
+  this.parent.Auth.on('login logout', function(auth){
+    self.update()
+  })
+
+  this.capitalize = function(s) {
+    return s.split(" ").map(function(e){ var a = e.split(""); a.unshift(a.shift().toUpperCase()); return a.join("") }).join(" ")
+  }.bind(this)
+
 })
 
 
 
-riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <div class="qc-comments"> <auth data="{ opts.providers }"></auth> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
+riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <newcomment></newcomment> <div class="qc-comments"> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
   this.providers = opts.providers;
   this.pageID    = opts.pageID;
   this.firebase  = opts.firebase;
   this.dataset   = this.firebase.child('comments').child(this.pageID);
   this.comments  = [];
-
-  
-
-  this.currentUser = function() {
-    var auth = this.firebase.getAuth();
-    if(!auth) return null;
-    var profile = auth[auth.provider].cachedUserProfile;
-    var info = {};
-    info.name = auth[auth.provider].displayName;
-    info.uid = auth.uid;
-    info.provider = auth.provider;
-    switch(auth.provider){
-      case "facebook":
-        info.avatar = profile.picture.data.url;
-        info.url = profile.link;
-        break;
-      case "twitter":
-        info.avatar = profile.profile_image_url;
-        info.url = profile.url;
-        break;
-      case "github":
-        info.avatar = profile.avatar_url;
-        info.url = profile.html_url;
-        break;
-      case "google":
-        info.avatar = profile.picture;
-        info.url = profile.link;
-        break;
-    }
-    return info;
-  }.bind(this)
-
+  this.Auth      = opts.Auth;
 
   this.save = function(comment) {
-    if(!this.currentUser()) throw "Must be logged in to comment";
+    if(!opts.Auth.currentUser()) throw "Must be logged in to comment";
     this.dataset.push({
-      author: this.currentUser(),
+      author: opts.Auth.currentUser(),
       time: Date.now(),
       body: comment.body.value
     });
@@ -557,29 +515,82 @@ riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <div class="qc-com
 var QC = function(riot){
 
   var providers = {
-    facebook: {
-      type: "oauth",
-      available: true
-    },
-    github: {
-      type: "oauth",
-      available: true
-    },
-    twitter: {
-      type: "oauth",
-      available: true,
-    },
-    google: {
-      type: "oauth",
-      available: true,
-    },
+    facebook: {},
+    github: {},
+    twitter: {},
+    google: {},
     password: {
+      type: "authWithPassword",
       available: false, //todo unimplemented
     },
     anonymous: {
+      type: "authAnonymously",
+      available: false, //todo unimplemented
+    },
+    custom: {
+      type: 'authWithCustomToken',
       available: false, //todo unimplemented
     }
   };
+
+  function Auth(FB, providers){
+    riot.observable(this);
+    this.providers = providers;
+
+    this.currentUser = function(){
+      var auth = FB.getAuth();
+      if(!auth) return null;
+      var profile = auth[auth.provider].cachedUserProfile;
+      var info = {};
+      info.name = auth[auth.provider].displayName;
+      info.uid = auth.uid;
+      info.provider = auth.provider;
+      switch(auth.provider){
+        case "facebook":
+          info.avatar = profile.picture.data.url;
+          info.url = profile.link;
+          break;
+        case "twitter":
+          info.avatar = profile.profile_image_url;
+          info.url = profile.url;
+          break;
+        case "github":
+          info.avatar = profile.avatar_url;
+          info.url = profile.html_url;
+          break;
+        case "google":
+          info.avatar = profile.picture;
+          info.url = profile.link;
+          break;
+      }
+      return info;
+    };
+
+    this.loggedIn = function(){
+      return !!FB.getAuth();
+    };
+
+    var self = this;
+    this.login = function(method){
+      if(this.currentUser()) throw "Already logged in";
+      var p = this.providers[method];
+      if(!p || p.available===false) throw "Provider unavailable";
+      FB[p.type || "authWithOAuthPopup"](method, function(err, auth){
+        if(err) throw err;
+        if(!auth) return self.trigger('logout');
+        FB.child('users').child(auth.uid).set(auth);
+        return self.trigger('login', auth);
+      });
+    };
+    this.logout = function(){
+      FB.unauth();
+      this.trigger('logout');
+    };
+  }
+
+  // var a=  new Auth(FB, providers)
+  // a.on('login', function(e){ console.log(["login listen", e]); });
+  // a.on('logout', function(){console.log("bark");});
 
   return function(opts){
     if(!opts.firebase) throw "Firebase is required";
@@ -596,7 +607,7 @@ var QC = function(riot){
       }
     }
 
-    opts.providers = providers;
+    opts.Auth = new Auth(opts.firebase, providers);
     riot.mount('qcomment', opts);
   };
 }(window.riot);

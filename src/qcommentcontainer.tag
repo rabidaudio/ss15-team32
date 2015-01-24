@@ -1,7 +1,7 @@
 <qcomment>
   <h2>Comments ({ comments.length })</h2>
+  <newcomment/>
   <div class="qc-comments">
-    <auth data={ opts.providers }/>
     <comment each={ comments } data={ this }/>
   </div>
 
@@ -10,43 +10,12 @@
   this.firebase  = opts.firebase;
   this.dataset   = this.firebase.child('comments').child(this.pageID);
   this.comments  = [];
-
-  
-
-  currentUser(){
-    var auth = this.firebase.getAuth();
-    if(!auth) return null;
-    var profile = auth[auth.provider].cachedUserProfile;
-    var info = {};
-    info.name = auth[auth.provider].displayName;
-    info.uid = auth.uid;
-    info.provider = auth.provider;
-    switch(auth.provider){
-      case "facebook":
-        info.avatar = profile.picture.data.url;
-        info.url = profile.link;
-        break;
-      case "twitter":
-        info.avatar = profile.profile_image_url;
-        info.url = profile.url;
-        break;
-      case "github":
-        info.avatar = profile.avatar_url;
-        info.url = profile.html_url;
-        break;
-      case "google":
-        info.avatar = profile.picture;
-        info.url = profile.link;
-        break;
-    }
-    return info;
-  }
-
+  this.Auth      = opts.Auth;
 
   save(comment){
-    if(!this.currentUser()) throw "Must be logged in to comment";
+    if(!opts.Auth.currentUser()) throw "Must be logged in to comment";
     this.dataset.push({
-      author: this.currentUser(),
+      author: opts.Auth.currentUser(),
       time: Date.now(),
       body: comment.body.value
     });

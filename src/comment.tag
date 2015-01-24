@@ -6,6 +6,7 @@
     <div class="qc-header">
       <a href="{ data.author.url }" class="author text-muted">{ data.author.name }</a> | 
       <a href="#comment/{ data.id }" class="timestamp text-muted" title="{ new Date(data.time).toLocaleString() }">{ vagueTime }</a>
+      <a href="#" role="button" class="edit text-muted" if={false}>Edit</a>
     </div>
     <div class="qc-body">{ data.body }</div>
     <hr/>
