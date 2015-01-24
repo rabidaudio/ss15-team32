@@ -249,27 +249,54 @@
 
 
           <style>
-          .qc-comments {
-            width: 100%;
+          .qc-login-opts {
+            list-style: none;
           }
-          .qc-comment {
-            padding: 25px;
+          .qc-login-opts li {
+            float: left;
+            padding-left: 1em;
+          }
+          .qc-logged-out {
+            /*display: none;*/
+          }
+          .qc-logged-in {
+            float: left;
+            width: 100px;
+          }
+          .headshot {
+            width: 80%;
+            height: 0;
+            padding-bottom: 80%;
+            margin: auto;
+            overflow: hidden;
+            border-radius: 9999px;
+
+            img {
+              -webkit-filter: grayscale(100%);
+              -moz-filter: grayscale(100%);
+              filter: grayscale(100%);
+            }
           }
           </style>
 
           <div class="qc-comments">
             <div class="qc-comment qc-new">
               <div class="qc-user qc-logged-out">
-                Sign in to post a comment:
-                <ul>
-                  <li>Email</li>
-                  <li>Facebook</li>
-                  <li>Twitter</li>
-                  <li>Google</li>
-                  <li>Github</li>
+                <p>Sign in to post a comment.</p>
+                <ul class="qc-login-opts">
+                  <li><a href="#">Email</a></li>
+                  <li><a href="#">Facebook</a></li>
+                  <li><a href="#">Twitter</a></li>
+                  <li><a href="#">Google</a></li>
+                  <li><a href="#">Github</a></li>
                 </ul>
               </div>
-              <textarea rows="1" class="gc-new-body form-control"></textarea>
+<!--               <div class="qc-user qc-logged-in">
+                <div class="headshot">
+                  <img src="http://www.gravatar.com/avatar/e3f99640d60577f72086b54087423593.png?s=200">
+                </div>
+              </div> -->
+              <textarea rows="1" class="gc-new-body form-control disabled"></textarea>
               <button class="submit">Submit</button>
               <hr/>
             </div>

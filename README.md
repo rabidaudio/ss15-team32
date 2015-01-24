@@ -12,3 +12,14 @@ add mandrill, etc
 
 optimize for size
 
+
+
+
+
+Benefits
+--------
+
+- unopinionated
+- bootstrap friendly
+- small (hopefully)
+- no third-party tracking of users (depending on what info oath providers get....)
