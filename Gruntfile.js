@@ -89,8 +89,7 @@ module.exports = function(grunt) {
 
     concat: {
       options: {
-        separator: '\n\n\n',
-        banner: '/* <%= grunt.template.today("yyyy-mm-dd") %> */',
+        separator: '\n\n\n'
       },
       dev: {
         src: ['.tmp/**/*.js', 'src/**/*.js'],

@@ -1,20 +1,20 @@
 <qcommentcontainer>
   <div class="qc-comments">
-    <auth></auth>
+    <auth data={ opts.providers }></auth>
     <newcomment></newcomment>
     <comment each={ comments } data={ this }></comment>
   </div>
 
   this.providers = opts.providers
   this.pageID    = opts.pageID
-  this.FB        = opts.FB
-  this.dataset   = this.FB.child('comments').child(this.pageID)
+  this.firebase  = opts.firebase
+  this.dataset   = this.firebase.child('comments').child(this.pageID)
   this.comments  = []
 
   
 
   currentUser(){
-    var auth = this.FB.getAuth();
+    var auth = this.firebase.getAuth();
     if(!auth) return null;
     var info = {};
     switch(auth.provider){

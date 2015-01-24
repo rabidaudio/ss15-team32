@@ -348,7 +348,16 @@
       var FB = new Firebase('https://cjk-blog.firebaseio.com');
       new QC({
         firebase: FB,
-        pageID: 'bootstrap'
+        pageID: 'bootstrap',
+        // limit: 2
+        authMethods: {
+          facebook: false,
+          twitter: true,
+          github: true,
+          google: false,
+          password: false,
+          anonymous: false
+        }
       });
     </script>
   

@@ -1,24 +1,20 @@
-/* 2015-01-24 */riot.tag('auth', '<ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <provider data="{ name }"></provider> </li> </ul>', function(opts) {
-  this.providers = {
-    facebook: {
-      type: "oauth",
-      available: true
-    },
-    github: {
-      type: "oauth",
-      available: true
-    },
-    twitter: {
-      type: "oauth",
-      available: false,
-    }
-  }
+/* 2015-01-24 */riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in. <a href="#" onclick="{ logout }">Log out</a></p> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <provider data="{ name }"></provider> </li> </ul> </div>', function(opts) {
+  this.providers = this.opts.data;
+  this.loggedIn = !!this.parent.currentUser();
+
+  var firebase = this.parent.firebase;
 
   this.login = function(provider) {
-    this.parent.FB.authWithOAuthPopup(provider, this.authHandler);
+    firebase.authWithOAuthPopup(provider, this.authHandler);
+  }.bind(this)
+  this.logout = function() {
+    firebase.unauth();
+    this.loggedIn = false;
   }.bind(this)
   this.authHandler = function(err, auth) {
-    if(err) throw err;
+    if(err) console.error(err);
+    this.loggedIn = !!auth;
+    this.update();
   }.bind(this)
 })
 
@@ -27,7 +23,7 @@ riot.tag('comment', '<div class="qc-comment" name="{ opts.data.id }"> <div class
 })
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <div class="qc-user qc-logged-out" if="{ !parent.user }"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ parent.providers }"> <a href="#" class="provicer-{ name }" onclick="{ login }">{ name }</a> </li> </ul> </div> <div class="qc-user qc-logged-in" if="{ parent.user }"> { parent.user.name } </div> <form>      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }"></textarea>\n <button class="submit" name="submit" onclick="{ send }">Submit</button> </form> <hr></hr> </div>', function(opts) {
+riot.tag('newcomment', '<div class="qc-comment qc-new"> <form>      <textarea rows="{ height }" class="gc-new-body form-control" name="body" onfocus="{ grow }"></textarea>\n <button class="submit" name="submit" onclick="{ send }">Submit</button> </form> <hr></hr> </div>', function(opts) {
   this.height = 1
 
   this.send = function(e) {
@@ -64,17 +60,17 @@ riot.tag('provider', '<a href="#" onclick="{ login }" class="provider-{ opts.dat
 })
 
 
-riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth></auth> <newcomment></newcomment> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
+riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth data="{ opts.providers }"></auth> <newcomment></newcomment> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
   this.providers = opts.providers
   this.pageID    = opts.pageID
-  this.FB        = opts.FB
-  this.dataset   = this.FB.child('comments').child(this.pageID)
+  this.firebase  = opts.firebase
+  this.dataset   = this.firebase.child('comments').child(this.pageID)
   this.comments  = []
 
   
 
   this.currentUser = function() {
-    var auth = this.FB.getAuth();
+    var auth = this.firebase.getAuth();
     if(!auth) return null;
     var info = {};
     switch(auth.provider){
@@ -135,10 +131,40 @@ riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth></auth> <newcomme
 var QC = function(riot){
   if(!riot) throw "Riot.js is required";
 
+  var providers = {
+    facebook: {
+      type: "oauth",
+      available: true
+    },
+    github: {
+      type: "oauth",
+      available: true
+    },
+    twitter: {
+      type: "oauth",
+      available: true,
+    },
+    google: {
+      type: "oauth",
+      available: true,
+    },
+    password: {
+      available: false, //todo unimplemented
+    },
+    anonymous: {
+      available: false, //todo unimplemented
+    }
+  };
+
   return function(opts){
-    riot.mount('qcommentcontainer', {
-      FB:       opts.firebase,
-      pageID:   encodeURIComponent( opts.pageID || window.location.pathname ),
-    });
+    opts.pageID = encodeURIComponent( opts.pageID || window.location.pathname );
+    if(!opts.firebase) throw "Firebase is required";
+    for(var a in opts.authMethods){
+      if(opts.authMethods.hasOwnProperty(a) && providers.hasOwnProperty(a)){
+        providers[a].available = opts.authMethods[a];
+      }
+    }
+    opts.providers = providers;
+    riot.mount('qcommentcontainer', opts);
   };
 }(riot);
