@@ -29,7 +29,7 @@
       throw "Can't save spammy comments"
     }else{
       this.parent.save(this)
-      body.value = ""
+      this.body.value = ""
       this.shrink()
     }
   }

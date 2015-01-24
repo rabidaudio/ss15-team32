@@ -11,7 +11,7 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <div class="qc-user qc-l
       throw "Can't save spammy comments"
     }else{
       this.parent.save(this)
-      body.value = ""
+      this.body.value = ""
       this.shrink()
     }
   }.bind(this)
