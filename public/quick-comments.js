@@ -1,11 +1,11 @@
-/* 2015-01-24 */riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in. <a href="#" onclick="{ logout }">Log out</a></p> </div> <div if="{ loggedIn }"> <newcomment></newcomment> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <provider data="{ name }"></provider> </li> </ul> </div>', function(opts) {
+/* 2015-01-24 */riot.tag('auth', '<div class="qc-user qc-logged-in" if="{ loggedIn }"> <p>Logged in. <a href="#" onclick="{ logout }">Log out</a></p> </div> <div if="{ loggedIn }"> <newcomment></newcomment> </div> <div class="qc-user qc-logged-out" if="{ !loggedIn }"> <p>Sign in to post a comment.</p> <ul class="qc-login-opts"> <li each="{ name, val in providers }" if="{ val.available }"> <a href="#" onclick="{ parent.login }" class="provider-{ name }">{ name }</a> </li> </ul> <hr></hr> </div>', function(opts) {
   this.providers = this.opts.data;
   this.loggedIn = !!this.parent.currentUser();
 
   var firebase = this.parent.firebase;
 
-  this.login = function(provider) {
-    firebase.authWithOAuthPopup(provider, this.authHandler);
+  this.login = function(e) {
+    firebase.authWithOAuthPopup(e.item.name, this.authHandler);
   }.bind(this)
   this.logout = function() {
     firebase.unauth();
@@ -136,8 +136,8 @@ riot.tag('qcommentcontainer', '<div class="qc-comments"> <auth data="{ opts.prov
     }
   }.bind(this)
 
-  var query = this.dataset.orderByChild('time').limitToFirst(opts.limit>0 ? opts.limit : 100)
-  query.on("child_added", this.addComment)
+  var query = this.dataset.orderByChild('time').limitToFirst(opts.limit)
+  query.on("child_added",   this.addComment)
   query.on("child_changed", this.updateComment)
   query.on("child_removed", this.removeComment)
   
@@ -173,13 +173,20 @@ var QC = function(riot){
   };
 
   return function(opts){
-    opts.pageID = encodeURIComponent( opts.pageID || window.location.pathname );
     if(!opts.firebase) throw "Firebase is required";
+
+    //if no pageID was specified, use the url's path
+    opts.pageID = encodeURIComponent( opts.pageID || window.location.pathname );
+
+    opts.limit = (opts.limit > 0 ? opts.limit : 100);
+
+    //Enable/disable proviers from the options object
     for(var a in opts.authMethods){
       if(opts.authMethods.hasOwnProperty(a) && providers.hasOwnProperty(a)){
         providers[a].available = opts.authMethods[a];
       }
     }
+
     opts.providers = providers;
     riot.mount('qcommentcontainer', opts);
   };

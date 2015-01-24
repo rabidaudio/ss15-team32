@@ -9,9 +9,10 @@
     <p>Sign in to post a comment.</p>
     <ul class="qc-login-opts">
       <li each={ name, val in providers } if={ val.available }>
-        <provider data={ name }></provider>
+        <a href="#" onclick={ parent.login } class="provider-{ name }">{ name }</a>
       </li>
     </ul>
+    <hr/>
   </div>
 
   this.providers = this.opts.data;
@@ -19,8 +20,8 @@
 
   var firebase = this.parent.firebase;
 
-  login(provider){
-    firebase.authWithOAuthPopup(provider, this.authHandler);
+  login(e){
+    firebase.authWithOAuthPopup(e.item.name, this.authHandler);
   }
   logout(){
     firebase.unauth();

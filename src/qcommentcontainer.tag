@@ -75,8 +75,8 @@
     }
   }
 
-  var query = this.dataset.orderByChild('time').limitToFirst(opts.limit>0 ? opts.limit : 100)
-  query.on("child_added", this.addComment)
+  var query = this.dataset.orderByChild('time').limitToFirst(opts.limit)
+  query.on("child_added",   this.addComment)
   query.on("child_changed", this.updateComment)
   query.on("child_removed", this.removeComment)
   

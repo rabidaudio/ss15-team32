@@ -27,13 +27,20 @@ var QC = function(riot){
   };
 
   return function(opts){
-    opts.pageID = encodeURIComponent( opts.pageID || window.location.pathname );
     if(!opts.firebase) throw "Firebase is required";
+
+    //if no pageID was specified, use the url's path
+    opts.pageID = encodeURIComponent( opts.pageID || window.location.pathname );
+
+    opts.limit = (opts.limit > 0 ? opts.limit : 100);
+
+    //Enable/disable proviers from the options object
     for(var a in opts.authMethods){
       if(opts.authMethods.hasOwnProperty(a) && providers.hasOwnProperty(a)){
         providers[a].available = opts.authMethods[a];
       }
     }
+
     opts.providers = providers;
     riot.mount('qcommentcontainer', opts);
   };
