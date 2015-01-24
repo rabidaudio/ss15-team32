@@ -4,11 +4,11 @@
     <comment each={ comments } data={ this }></comment>
   </div>
 
-  this.providers = opts.providers
-  this.pageID    = opts.pageID
-  this.firebase  = opts.firebase
-  this.dataset   = this.firebase.child('comments').child(this.pageID)
-  this.comments  = []
+  this.providers = opts.providers;
+  this.pageID    = opts.pageID;
+  this.firebase  = opts.firebase;
+  this.dataset   = this.firebase.child('comments').child(this.pageID);
+  this.comments  = [];
 
   
 
@@ -43,41 +43,41 @@
       author: this.currentUser(),
       time: Date.now(),
       body: comment.body.value
-    })
+    });
   }
 
   getComment(snapshot){
-    var comment = snapshot.val()
-    comment.id = snapshot.key()
-    return comment
+    var comment = snapshot.val();
+    comment.id = snapshot.key();
+    return comment;
   }
   addComment(snapshot){
-    var comment = this.getComment(snapshot)
-    this.comments.unshift(comment)
-    return this.update()
+    var comment = this.getComment(snapshot);
+    this.comments.unshift(comment);
+    return this.update();
   }
   updateComment(snapshot){
-    var comment = this.getComment(snapshot)
+    var comment = this.getComment(snapshot);
     for(var i = this.comments.length; i-->0;){
       if(this.comments[i].id === comment.id){
         this.comments[i] = comment;
-        return this.update()
+        return this.update();
       }
     }
   }
   removeComment(snapshot){
-    var comment = this.getComment(snapshot)
+    var comment = this.getComment(snapshot);
     for(var i = this.comments.length; i-->0;){
       if(this.comments[i].id === comment.id){
         this.comments.splice(i, 1);
-        return this.update()
+        return this.update();
       }
     }
   }
 
-  var query = this.dataset.orderByChild('time').limitToFirst(opts.limit)
-  query.on("child_added",   this.addComment)
-  query.on("child_changed", this.updateComment)
-  query.on("child_removed", this.removeComment)
+  var query = this.dataset.orderByChild('time').limitToFirst(opts.limit);
+  query.on("child_added",   this.addComment);
+  query.on("child_changed", this.updateComment);
+  query.on("child_removed", this.removeComment);
   
 </qcommentcontainer>

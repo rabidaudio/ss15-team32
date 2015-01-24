@@ -11,10 +11,10 @@
 
   send(e) {
 
-    if(!this.spamFree){
+    if(!this.spamFree()){
       throw "Can't save spammy comments"
     }else{
-      this.parent.save(this)
+      this.parent.parent.save(this)
       this.body.value = ""
       this.shrink()
     }

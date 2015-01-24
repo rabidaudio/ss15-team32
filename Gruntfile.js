@@ -21,7 +21,8 @@ module.exports = function(grunt) {
     div: grunt.file.readJSON('divshot.json'),
 
     jshint: {
-      src: ['src/**/*.js']
+      src: ['src/**/*.js'],
+      tmp: ['.tmp/*']
     },
 
     divshot: {
@@ -92,24 +93,28 @@ module.exports = function(grunt) {
         separator: '\n\n\n'
       },
       dev: {
-        src: ['.tmp/**/*.js', 'src/**/*.js'],
+        src: ['.tmp/includes/**/*.js', '.tmp/tags/*.js', 'src/**/*.js'],
         dest: 'quick-comments.js',
       },
     },
     shell: {
       riot: {
-          command: 'riot src .tmp'
+          command: 'riot src .tmp/tags'
       }
     },
     copy: {
       toServer: {
         src: ['quick-comments.js', 'quick-comments.min.js'],
         dest: 'public/'
+      },
+      includeDependencies: {
+        src: ['bower_components/vagueTime.js/lib/vagueTime.js'],
+        dest: '.tmp/includes/'
       }
     }
   });
 
-  grunt.registerTask('build', ['jshint', 'shell:riot', 'concat:dev', 'uglify:dist', 'copy:toServer']);
+  grunt.registerTask('build', ['jshint:src', 'shell:riot', 'copy:includeDependencies', 'concat:dev', 'uglify:dist', 'copy:toServer']);
 
   grunt.registerTask('deploy', ['build', 'divshot:push:development']);
 
