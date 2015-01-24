@@ -461,7 +461,6 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset __disabled="{p
 })
 
 
-
 riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <newcomment></newcomment> <div class="qc-comments"> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
   this.providers = opts.providers
   this.pageID    = opts.pageID
