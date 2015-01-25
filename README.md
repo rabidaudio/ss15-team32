@@ -35,3 +35,32 @@ Benefits
 
 - http://microjs.com/
 - https://github.com/muut/riotjs/
+
+
+Configuration
+=============
+
+defaults
+
+```javascript
+new QC({
+  firebase: new Firebase('https://<YOUR-FIREBASE-SITE>.firebaseio.com'),
+  pageID: '/a/page/id/or/permalink', //defaults to current URL path
+
+  //other options (below are defaults)
+  bootstrap: false,     //enable bootstrap-friendly styles
+  limit: 100,           //number of comments to display
+  meow: false,          //???
+  authMethods: {        //disable specific login methods by setting them to false
+    facebook: true,
+    twitter: true,
+    github: true,
+    google: true,
+    //unimplemented:
+    password: false,
+    anonymous: false,
+    custom: false
+  }
+});
+
+```
