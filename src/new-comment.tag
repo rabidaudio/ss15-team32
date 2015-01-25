@@ -1,26 +1,28 @@
 <newcomment>
   <div class="qc-comment qc-new">
     <fieldset>
-      <textarea disabled={parent.Auth.loggedIn() ? undefined : true} rows={height} class={gc-new-body: 1, form-control: parent.opts.bootstrap} name="body" onfocus={grow} onblur={shrink} onkeydown={update} placeholder={parent.Auth.loggedIn() ? 'Leave a comment' : 'Sign in to post a comment.'}></textarea>
+      <textarea disabled={parent.Auth.loggedIn() ? undefined : true} rows={height} class={gc-new-body:1, form-control:b} name="body" onfocus={grow} onblur={shrink} onkeydown={update} placeholder={parent.Auth.loggedIn() ? 'Leave a comment' : 'Sign in to post a comment.'}></textarea>
       <div class="qc-user qc-logged-in" if={parent.Auth.loggedIn()}>
         <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick={logout}>
           Log out or switch accounts</a>
         </p>
       </div>
-      <div class={qc-signin:1, input-group-btn: parent.opts.bootstrap}>
-        <button class={qc-logged-out: 1, btn: parent.opts.bootstrap, btn-default: parent.opts.bootstrap, dropdown-toggle: parent.opts.bootstrap} data-toggle="dropdown" if={!parent.Auth.loggedIn()}>Sign in<span class="caret"></span></button>
-        <ul class={qc-login-opts: 1, dropdown-menu: parent.opts.bootstrap, dropdown-menu-right: parent.opts.bootstrap} role="menu">
+      <div class={qc-signin:1, input-group-btn:b}>
+        <button class={qc-logged-out:1, btn:b, btn-default:b, dropdown-toggle:b} data-toggle="dropdown" if={!parent.Auth.loggedIn()}>Sign in<span class="caret"></span></button>
+        <ul class={qc-login-opts:1, dropdown-menu:b, dropdown-menu-right:b} role="menu">
           <li each={name, val in parent.Auth.providers} if={val.available}>
             <a href="#" role="button" onclick={parent.login} class="provider-{name}">{parent.capitalize(name)}</a>
           </li>
         </ul>
       </div>
-      <button disabled={this.body.value.length ? undefined : true} class={submit: 1, btn: parent.opts.bootstrap, btn-primary: parent.opts.bootstrap} name="submit" onclick={send} if={parent.Auth.loggedIn()}>Submit</button>
+      <button disabled={this.body.value.length ? undefined : true} class={submit:1, btn:b, btn-primary:b} name="submit" onclick={send} if={parent.Auth.loggedIn()}>Submit</button>
     </fieldset>
     <hr/>
   </div>
 
   this.height = 1
+
+  this.b = this.parent.opts.bootstrap
 
   send(e) {
     if(!this.spamFree()) throw "Can't save spammy comments"
