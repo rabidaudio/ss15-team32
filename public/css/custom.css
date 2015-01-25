@@ -21,8 +21,11 @@ border-bottom-style: groove;
 margin-left: 8%;
 }
 
-.section.two {
-
+.bg.bg-1 {
+  background: url("../images/src/photo-1416339684178-3a239570f315.jpg") no-repeat center center /cover fixed;
+}
+.bg.bg-2 {
+  background: url("../images/src/photo-1416339442236-8ceb164046f8.jpg") no-repeat center center /cover fixed; 
 }
 
 .top-room{
@@ -35,11 +38,14 @@ margin-left: 8%;
   height: 8%;
   min-height: 40px;
 width: 100%;
-background-color: grey;
+background-color: rgb(252, 252, 252);
 z-index: 1000;
 }
 .nav-holder .link {
   font-size: 2em;
+  color: #222;
+  text-decoration: none;
+  margin: 0em 1em;
 }
 
 .column, .columns {
@@ -57,4 +63,8 @@ margin-left: 2%;
 
 .title.column {
   margin-top: 7%;
+}
+
+.bg .column {
+  background-color: rgba(252, 252, 252, 0.2);
 }
