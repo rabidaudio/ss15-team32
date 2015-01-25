@@ -463,7 +463,7 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset>      <textare
 })
 
 
-riot.tag('qcomment', '<style name="core"></style> <h2>Comments ({comments.length})</h2> <newcomment></newcomment> <div class="qc-comments"> <comment each="{comments}" data="{this}"></comment> </div>', function(opts) {
+riot.tag('qcomment', '<style name="core"></style> <h2 id="comments">Comments ({comments.length})</h2> <newcomment></newcomment> <div class="qc-comments"> <comment each="{comments}" data="{this}"></comment> </div>', function(opts) {
   this.providers = opts.providers
   this.pageID    = opts.pageID
   this.firebase  = opts.firebase

@@ -2,7 +2,7 @@
   "name": "quick-comments",
   "version": "0.9.0",
   "homepage": "http://ss15-team32.divshot.io/",
-  "main": "lib/quick-comments.js",
+  "main": "public/lib/quick-comments.js",
   "license": "MIT",
   "author": "Charles Julian Knight, charles@rabidaudio.com",
   "ignore": [

@@ -1,6 +1,6 @@
 <qcomment>
   <style name="core"></style>
-  <h2>Comments ({comments.length})</h2>
+  <h2 id="comments">Comments ({comments.length})</h2>
   <newcomment/>
   <div class="qc-comments">
     <comment each={comments} data={this}/>
