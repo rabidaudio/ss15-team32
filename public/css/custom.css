@@ -42,3 +42,7 @@ z-index: 1000;
 .nav-holder .link {
   font-size: 2em;
 }
+
+.column, .columns {
+margin-left: 2%;
+}

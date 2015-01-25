@@ -1,6 +1,6 @@
 {
   "name": "quick-comments",
-  "version": "1.0.0",
+  "version": "0.9.0",
   "description": "A crazy-light, static drop-in comments system",
   "main": "quick-comments.js",
   "scripts": {
