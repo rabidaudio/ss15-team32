@@ -39,7 +39,7 @@ var QC = function(riot){
           break;
         case "twitter":
           info.avatar = profile.profile_image_url;
-          info.url = profile.url;
+          info.url = "http://twitter.com/"+profile.screen_name;
           break;
         case "github":
           info.avatar = profile.avatar_url;

@@ -1,8 +1,9 @@
 <qcomment>
-  <h2>Comments ({ comments.length })</h2>
+  <style name="core"></style>
+  <h2>Comments ({comments.length})</h2>
   <newcomment/>
   <div class="qc-comments">
-    <comment each={ comments } data={ this }/>
+    <comment each={comments} data={this}/>
   </div>
 
   this.providers = opts.providers
@@ -55,5 +56,19 @@
   query.on("child_added",   this.addComment)
   query.on("child_changed", this.updateComment)
   query.on("child_removed", this.removeComment)
+
+  //This adds the core styling to the block
+  this.core.innerText = ".qc-header {"+
+    "overflow: hidden;"+
+  "}"+
+  ".qc-body {"+
+    "overflow: hidden;"+
+  "}"+
+  ".qc-new textarea {"+
+    "width: 100%;"+
+  "}"+
+  ".avatar img {"+
+    "max-width: 5em;"+
+  "}";
   
 </qcomment>

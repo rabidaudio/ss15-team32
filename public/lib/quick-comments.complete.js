@@ -416,7 +416,7 @@ riot.tag('comment', '<div class="qc-comment" id="comment/{id}"> <div class="avat
 })
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset>      <textarea __disabled="{parent.Auth.loggedIn() ? undefined : true}" rows="{height}" class="{gc-new-body:1, form-control:b}" name="body" onfocus="{grow}" onblur="{shrink}" onkeydown="{update}" placeholder="{parent.Auth.loggedIn() ? \'Leave a comment\' : \'Sign in to post a comment.\'}"></textarea>\n <div class="qc-user qc-logged-in" if="{parent.Auth.loggedIn()}"> <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick="{logout}"> Log out or switch accounts</a> </p> </div> <div class="{qc-signin:1, input-group-btn:b}"> <button class="{qc-logged-out:1, btn:b, btn-default:b, dropdown-toggle:b}" data-toggle="dropdown" if="{!parent.Auth.loggedIn()}">Sign in<span class="caret"></span></button> <ul class="{qc-login-opts:1, dropdown-menu:b, dropdown-menu-right:b}" role="menu"> <li each="{name, val in parent.Auth.providers}" if="{val.available}"> <a href="#" role="button" onclick="{parent.login}" class="provider {name}">{parent.capitalize(name)}</a> </li> </ul> </div> <button __disabled="{this.body.value.length ? undefined : true}" class="{submit:1, btn:b, btn-primary:b}" name="submit" onclick="{send}" if="{parent.Auth.loggedIn()}">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
+riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset>      <textarea __disabled="{parent.Auth.loggedIn() ? undefined : true}" rows="{height}" class="{gc-new-body:1, form-control:b}" name="body" onfocus="{grow}" onblur="{shrink}" onkeydown="{update}" placeholder="{parent.Auth.loggedIn() ? \'Leave a comment\' : \'Sign in to post a comment.\'}"></textarea>\n <div class="qc-user qc-logged-in" if="{parent.Auth.loggedIn()}"> <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick="{logout}"> Log out or switch accounts</a> </p> </div> <div class="{qc-signin:1, input-group-btn:b}" if="{!parent.Auth.loggedIn() || b}"> <button class="{qc-logged-out:1, btn:b, btn-default:b, dropdown-toggle:b}" data-toggle="dropdown" if="{!parent.Auth.loggedIn() && b}">Sign in<span class="caret"></span></button> <span if="{!b}">Sign in:</span> <ul class="{qc-login-opts:1, dropdown-menu:b, dropdown-menu-right:b}" role="menu"> <li each="{name, val in parent.Auth.providers}" if="{val.available}"> <a href="#" role="button" onclick="{parent.login}" class="provider {name}">{parent.capitalize(name)}</a> </li> </ul> </div> <button __disabled="{this.body.value.length ? undefined : true}" class="{submit:1, btn:b, btn-primary:b}" name="submit" onclick="{send}" if="{parent.Auth.loggedIn()}">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
   this.height = 1
 
   this.b = this.parent.opts.bootstrap
@@ -462,7 +462,7 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset>      <textare
 })
 
 
-riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <newcomment></newcomment> <div class="qc-comments"> <comment each="{ comments }" data="{ this }"></comment> </div>', function(opts) {
+riot.tag('qcomment', '<style name="core"></style> <h2>Comments ({comments.length})</h2> <newcomment></newcomment> <div class="qc-comments"> <comment each="{comments}" data="{this}"></comment> </div>', function(opts) {
   this.providers = opts.providers
   this.pageID    = opts.pageID
   this.firebase  = opts.firebase
@@ -513,6 +513,19 @@ riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <newcomment></newc
   query.on("child_added",   this.addComment)
   query.on("child_changed", this.updateComment)
   query.on("child_removed", this.removeComment)
+
+  this.core.innerText = ".qc-header {"+
+    "overflow: hidden;"+
+  "}"+
+  ".qc-body {"+
+    "overflow: hidden;"+
+  "}"+
+  ".qc-new textarea {"+
+    "width: 100%;"+
+  "}"+
+  ".avatar img {"+
+    "max-width: 5em;"+
+  "}";
   
 })
 
@@ -520,10 +533,10 @@ riot.tag('qcomment', '<h2>Comments ({ comments.length })</h2> <newcomment></newc
 var QC = function(riot){
 
   var providers = {
-    facebook: {},
-    github: {},
-    twitter: {},
-    google: {},
+    facebook: {available: true},
+    github: {available: true},
+    twitter: {available: true},
+    google: {available: true},
     password: {
       type: "authWithPassword",
       available: false, //todo unimplemented
@@ -558,7 +571,7 @@ var QC = function(riot){
           break;
         case "twitter":
           info.avatar = profile.profile_image_url;
-          info.url = profile.url;
+          info.url = "http://twitter.com/"+profile.screen_name;
           break;
         case "github":
           info.avatar = profile.avatar_url;
@@ -591,7 +604,7 @@ var QC = function(riot){
         if(err) throw err;
       });
     };
-    
+
     this.logout = function(){
       FB.unauth();
     };
@@ -601,18 +614,20 @@ var QC = function(riot){
     if(!opts.firebase) throw "Firebase is required";
 
     //if no pageID was specified, use the url's path
+    // The URL encoding and replacement is to meet Firebase's ID conventions
     opts.pageID = encodeURIComponent( opts.pageID || window.location.pathname ).replace('.','-');
 
     opts.limit = (opts.limit > 0 ? opts.limit : 100);
 
     //Enable/disable proviers from the options object
     for(var a in opts.authMethods){
-      if(opts.authMethods.hasOwnProperty(a) && providers.hasOwnProperty(a)){
-        providers[a].available = opts.authMethods[a];
+      if((opts.authMethods.hasOwnProperty(a) && !opts.authMethods[a]) &&     //if the option is configured and disabled
+            providers.hasOwnProperty(a) ){                                   // and it is a valid provider
+        providers[a].available = false;
       }
     }
 
     opts.Auth = new Auth(opts.firebase, providers);
     riot.mount('qcomment', opts);
   };
-}(window.riot);
+}(riot);

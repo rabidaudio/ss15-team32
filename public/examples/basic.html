@@ -1,7 +1,7 @@
 <html><head>
 <style>
 .content {
-  width: 80%;
+  width: 50%;
   margin: auto;
   margin-top: 20px;
   border-width: 1px;
@@ -11,6 +11,7 @@
   padding: 20px;
 }
 </style>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 </head>
 <body>
 
@@ -27,7 +28,107 @@
     <p>In quis lorem lobortis, eleifend ipsum eu, malesuada ligula. Vestibulum pharetra quam sed felis dignissim lobortis. Quisque pellentesque ultricies luctus. Morbi in nisi nec nulla imperdiet mattis. Nam consectetur metus eu nisi tempor aliquet. Vivamus quis rhoncus lorem, quis cursus nulla. In placerat eu nisi a lacinia. Nunc id vulputate ante, in tincidunt arcu.</p>
 
     <p>Curabitur cursus dapibus mattis. Nam ac justo finibus, tincidunt nisl vel, accumsan justo. Fusce tempor volutpat tellus sit amet blandit. Aliquam viverra, nisl sit amet semper laoreet, mauris enim placerat metus, vel sagittis metus ante id elit. Aenean eget urna eget nisl iaculis elementum vitae id eros. Quisque at dictum ex. Sed finibus sem sed mi vulputate, a vestibulum dui vulputate. Praesent id libero vitae neque fermentum iaculis nec vitae purus. Phasellus vulputate ligula sed mauris imperdiet tristique. Suspendisse nisi sapien, consequat sit amet leo gravida, lacinia pellentesque sapien. In semper semper tortor, sit amet ultrices ex laoreet eu. Donec a nunc in ex tristique eleifend non facilisis felis. Integer odio ligula, maximus non varius at, aliquam vel augue. Interdum et malesuada fames ac ante ipsum primis in faucibus. Sed imperdiet lacus dui, vitae tempus nunc lacinia in.</p>
+
+    <hr/>
+
+    <h2>Style options</h2>
+    <p>Below are example comments with minimalist styling. Here's a minimalist stylesheet to get you started.</p>
+    <pre>
+.qc-header {
+  font-size: .7em;
+}
+.qc-user{
+  font-size: .7em;
+}
+.qc-signin {
+  font-size: .9em;
+}
+.avatar {
+  width: 3em;
+  height: 0;
+  padding-bottom: 3em;
+  position: relative;
+  overflow: hidden;
+  border-radius: 9999px;
+  margin-left: 1em;
+  margin-right: 1em;
+  float: left;
+}
+.avatar img {
+  width: 100%;
+  bottom: 0px;
+  position: absolute;
+}
+.qc-new .btn {
+  margin: 5px 0px;
+  float: right;
+}
+.qc-login-opts li {
+  padding: 0em 0.5em;
+}
+.qc-login-opts {
+  display: inline-flex;
+  list-style: none;
+}
+.qc-comment fieldset {
+  border-width: 0px;
+}
+    </pre>
+    <p>Below is a side-by-side comparison. Use the checkbox to enable the styles above.</p>
+    <input type="checkbox" id="toggle">Styles enabled</input>
+    <script>
+      $(document).ready(function(){
+        $("#toggle").change(function(){
+          $('#custom-styles')[0].disabled = !$(this).is(':checked');
+          console.log(["change", this]);
+        });
+        $('#custom-styles')[0].disabled = true;
+      });
+    </script>
   </div>
+
+<style id="custom-styles">
+  /* Minimalist Custom styling */
+  .qc-header {
+    font-size: .7em;
+  }
+  .qc-user{
+    font-size: .7em;
+  }
+  .qc-signin {
+    font-size: .9em;
+  }
+  .avatar {
+    width: 3em;
+    height: 0;
+    padding-bottom: 3em;
+    position: relative;
+    overflow: hidden;
+    border-radius: 9999px;
+    margin-left: 1em;
+    margin-right: 1em;
+    float: left;
+  }
+  .avatar img {
+    width: 100%;
+    bottom: 0px;
+    position: absolute;
+  }
+  .qc-new .btn {
+    margin: 5px 0px;
+    float: right;
+  }
+  .qc-login-opts li {
+    padding: 0em 0.5em;
+  }
+  .qc-login-opts {
+    display: inline-flex;
+    list-style: none;
+  }
+  .qc-comment fieldset {
+    border-width: 0px;
+  }
+</style>
 
   <qcomment></qcomment>
 
@@ -40,6 +141,7 @@
   new QC({
     firebase: FB,
     page: 'basic',
+    authMethods: {password: true}
   });
 </script>
 </body>
