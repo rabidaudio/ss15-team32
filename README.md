@@ -1,34 +1,36 @@
 TODO
 ====
 
-add bower package
+- add bower package
+- build example site/landing page
+  - what's the value
+- fix multi-line design
+- fix unstyled code
+- write docs
+- optimize for size
+- screenshots screenshots screenshots
+  - maybe gif comparison
+- add license file
 
-build example site/landing page
+future
+------
 
-
-
-add mandrill, etc
-
-optimize for size
-
-
-
-
+- notifications system 
+- custom tempating
+- more auth sources
+- other backends?
+- *replies!*
+- emulate facebook messenger enter functionality
+- allow edits
 
 Benefits
 --------
 
-- unopinionated
 - bootstrap friendly
 - small (hopefully) and fast (hopefully)
-- no third-party tracking of users (depending on what info oath providers get....)
-
-
-Future
-------
-
-emulate facebook messenger enter functionality
-
+- ~no~ reduced third-party tracking of users
+- control over the data
+- unopinionated? it's a bit opinionated right now
 
 - http://microjs.com/
 - https://github.com/muut/riotjs/
