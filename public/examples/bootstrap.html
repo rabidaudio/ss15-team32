@@ -10,6 +10,7 @@
 
     <!-- Latest compiled and minified CSS -->
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.2/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     <style>
     /*
@@ -264,6 +265,9 @@
             float: left;
             padding-left: 1em;
           }*/
+          .open > .qc-login-opts {
+            display: inline-flex;
+          }
           .qc-header {
             font-size: .7em;
           }
@@ -294,11 +298,30 @@
             margin: 5px 0px;
             float: right;
           }
+          .provider:before {
+            display: inline-block;
+            font: normal normal normal 14px/1 FontAwesome;
+            padding-right: .3em;
+          }
+          .facebook.provider:before {
+            content: "\f082";
+          }
+          .github.provider:before {
+            content: "\f092";
+          }
+          .twitter.provider:before {
+            content: "\f081";
+          }
+          .google.provider:before {
+            content: "\f0d4";
+          }
           </style>
 
           
           <!--[if lt IE 9]><script>html5.addElements('qcomment comment newcomment')</script><![endif]-->
           <qcomment></qcomment>
+          <i class="fa fa-camera-retro fa-lg"></i>
+          <i class="fa fa-camera-retro"></i>
 
         </div><!-- /.blog-main -->
 

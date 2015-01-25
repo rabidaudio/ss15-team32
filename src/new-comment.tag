@@ -11,7 +11,7 @@
         <button class={qc-logged-out:1, btn:b, btn-default:b, dropdown-toggle:b} data-toggle="dropdown" if={!parent.Auth.loggedIn()}>Sign in<span class="caret"></span></button>
         <ul class={qc-login-opts:1, dropdown-menu:b, dropdown-menu-right:b} role="menu">
           <li each={name, val in parent.Auth.providers} if={val.available}>
-            <a href="#" role="button" onclick={parent.login} class="provider-{name}">{parent.capitalize(name)}</a>
+            <a href="#" role="button" onclick={parent.login} class="provider {name}">{parent.capitalize(name)}</a>
           </li>
         </ul>
       </div>
