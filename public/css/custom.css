@@ -14,7 +14,7 @@ margin-top: 10%;
 
 .section {
     width: 100%;
-    min-height: 95vh;
+    min-height: 100vh;
     position: relative;
 /*border-bottom-width: 2px;
 border-bottom-style: groove;*/
@@ -25,11 +25,11 @@ border-bottom-style: groove;*/
 .section.full .container {
 /*  margin-bottom: -5%;*/
 }
-.download button {
+.download a {
 width: 100%;
 }
 @media (min-width: 550px) {
-  .download button {
+  .download a {
   width: 70%;
 margin-left: 8%;
   }
@@ -39,7 +39,7 @@ margin-left: 8%;
   background: url("../images/src/photo-1416339684178-3a239570f315.jpg") no-repeat center center /cover fixed;
 }
 .bg.bg-2 {
-  background: url("../images/src/photo-1416339442236-8ceb164046f8.jpg") no-repeat center center /cover fixed; 
+  background: url("../images/src/photo-1416339306562-f3d12fefd36f.jpg") no-repeat center center /cover fixed; 
 }
 
 .top-room{
@@ -112,4 +112,13 @@ font-size: .7em;
 
 a, a:visited, a:hover{
   color: black;
-};
+}
+.soon {
+
+  text-align: center;
+line-height: 20em;
+}
+
+#demos .column img {
+  width: 100%;
+}

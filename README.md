@@ -3,6 +3,8 @@ Quick Comments
 
 > A drop-in comments framework that won't slow you down.
 
+![Screenshot](public/images/screenshot.png)
+
 Use
 ---
 
