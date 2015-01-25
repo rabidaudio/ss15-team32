@@ -93,6 +93,14 @@ module.exports = function(grunt) {
         options: {
           compress: true,
         }
+      },
+      tiny: {
+        files: {
+          'lib/quick-comments.tiny.min.js': ['lib/quick-comments.tiny.js']
+        },
+        options: {
+          compress: true,
+        }
       }
     },
 
@@ -107,7 +115,11 @@ module.exports = function(grunt) {
       full: {
         src: ['.tmp/includes/**/*.js', '.tmp/tags/*.js', 'src/**/*.js'],
         dest: 'lib/quick-comments.complete.js'
-      }
+      },
+      tiny: {
+        src: ['.tmp/includes/**/*.js', '.tmp/tags/*.js', 'src/**/*.js'],
+        dest: 'lib/quick-comments.tiny.js'
+      },
     },
     shell: {
       riot: {
@@ -131,8 +143,9 @@ module.exports = function(grunt) {
     clean: ['.tmp']
   });
 
-  grunt.registerTask('build', ['jshint:src', 'compile:base', 'compile:full', 'copy:toServer']);
+  grunt.registerTask('build', ['jshint:src', 'compile:tiny', 'compile:base', 'compile:full', 'copy:toServer']);
 
+  grunt.registerTask('compile:tiny', ['shell:riot', 'concat:tiny', 'uglify:tiny', 'clean']);
   grunt.registerTask('compile:base', ['copy:baseDependencies', 'shell:riot', 'concat:base', 'uglify:base', 'clean']);
   grunt.registerTask('compile:full', ['copy:baseDependencies', 'copy:extraDependencies', 'shell:riot', 'concat:full', 'uglify:full', 'clean']);
 

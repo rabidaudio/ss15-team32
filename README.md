@@ -53,6 +53,8 @@ Dependencies
 
 The smaller dependencies such as [riot.js](https://github.com/muut/riotjs/) are baked into the script. [Firebase](https://www.firebase.com/) is not included in the default package because of it's large size. If you aren't using Firebase already, `quick-comments.complete.js` and `quick-comments.complete.min.js` bundle it in for you.
 
+If you want no dependancies included at all, the packages `quick-comments.tiny.js` and `quick-comments.tiny.min.js` are available as well.
+
 Browser support
 ---------------
 

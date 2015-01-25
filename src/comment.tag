@@ -1,5 +1,5 @@
 <comment>
-  <div class="qc-comment" id="comment/{id}">
+  <div class="qc-comment" id="comment/{id.substr(-7)}">
     <div class="avatar">
       <a href="{author.url}"><img src="{author.avatar}"></a>
     </div>
@@ -18,7 +18,8 @@
   this.author = opts.data.author
   if(this.parent.parent.opts.meow) opts.data.body = opts.data.body.replace(/[A-Za-z]+/g,'meow'); //so sneaky so cute
   this.paragraphs = opts.data.body.split(/\n+/)
-  this.vagueTime = vagueTime.get({to: opts.data.time}) //todo enable language support
+  var vagueTime = window.vagueTime || false
+  this.vagueTime = (!!vagueTime ? vagueTime.get({to: opts.data.time}) : new Date(opts.data.time).toLocaleString()) //todo enable language support
   this.b = this.parent.parent.opts.bootstrap
 
 </comment>
