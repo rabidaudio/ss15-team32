@@ -15,6 +15,7 @@
   "devDependencies": {
     "firebase": "~2.1.1",
     "riot": "~2.0.1",
-    "vagueTime.js": "~1.2.0"
+    "vagueTime.js": "~1.2.0",
+    "almond": "~0.3.0"
   }
 }

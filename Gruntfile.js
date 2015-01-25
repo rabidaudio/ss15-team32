@@ -22,7 +22,7 @@ module.exports = function(grunt) {
 
     jshint: {
       src: ['src/**/*.js'],
-      tmp: ['.tmp/*']
+      tmp: ['src/.tmp/*']
     },
 
     divshot: {
@@ -103,34 +103,53 @@ module.exports = function(grunt) {
         separator: '\n\n\n'
       },
       base: {
-        src: ['.tmp/includes/**/*.js', '.tmp/tags/*.js', 'src/**/*.js'],
+        src: ['src/.tmp/includes/**/*.js', 'src/.tmp/tags/*.js', 'src/**/*.js'],
         dest: 'public/lib/quick-comments.js',
       },
       full: {
-        src: ['.tmp/includes/**/*.js', '.tmp/tags/*.js', 'src/**/*.js'],
+        src: ['src/.tmp/includes/**/*.js', 'src/.tmp/tags/*.js', 'src/**/*.js'],
         dest: 'public/lib/quick-comments.complete.js'
       },
       tiny: {
-        src: ['.tmp/includes/**/*.js', '.tmp/tags/*.js', 'src/**/*.js'],
+        src: ['src/.tmp/includes/**/*.js', 'src/.tmp/tags/*.js', 'src/**/*.js'],
         dest: 'public/lib/quick-comments.tiny.js'
       },
     },
     shell: {
       riot: {
-          command: 'riot src .tmp/tags'
+          command: 'riot src src/.tmp/tags'
       }
     },
     copy: {
       baseDependencies: {
         src: ['bower_components/vagueTime.js/lib/vagueTime-en.js', 'bower_components/riot/dist/riot.min.js'],
-        dest: '.tmp/includes/'
+        dest: 'src/.tmp/includes/'
       },
       extraDependencies: {
         src: ['bower_components/firebase/firebase.js'],
-        dest: '.tmp/includes/'
+        dest: 'src/.tmp/includes/'
       }
     },
-    clean: ['.tmp']
+    clean: ['src/.tmp'],
+    requirejs: {
+      compile: {
+        options: {
+          baseUrl: "src",
+          include: "main",
+          insertRequire: ['main'],
+          name: "../bower_components/almond/almond",
+          out: 'public/lib/quick-comments.js',
+          wrap: {
+              startFile: 'src/head.partial.js',
+              endFile: 'src/foot.partial.js'
+          },
+          paths: {
+            'firebase': '../bower_components/firebase/firebase'
+          },
+          optimize: 'none'
+        }
+      }
+    }
   });
 
   grunt.registerTask('build', ['jshint:src', 'compile:tiny', 'compile:base', 'compile:full']);
