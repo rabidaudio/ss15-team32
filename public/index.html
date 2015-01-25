@@ -91,7 +91,7 @@
       <p>First add this tag where you want your comments block to go:</p>
       <pre>&lt;qcomment&gt;&lt;/qcomment&gt;</pre>
       <p>Then, add this with your scripts:</p>
-      <pre>&lt;script src="http://ss15-team32.divshot.io/lib/quick-comments.min.js"&gt;&lt;/script&gt;
+      <pre>&lt;script src="http://jss.rabidaudio.netdna-cdn.com/lib/quick-comments.complete.min.js"&gt;&lt;/script&gt;
 &lt;script&gt;
   new QC({
     firebase: new Firebase('https://&lt;YOUR-FIREBASE-SITE&gt;.firebaseio.com')
@@ -167,7 +167,10 @@
     $(document).ready(function(){
       $('a[href^="#"]').click(function(e){
         e.preventDefault();
-        $($(this).attr('href')).scrollTo(700);
+        var dest = $(this).attr('href');
+        $(dest).scrollTo(700, function(){
+          window.location.hash = dest.substr(1);
+        });
       });
     });
   </script>

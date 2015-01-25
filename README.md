@@ -17,7 +17,7 @@ First, drop this where you want your comments to go:
 Add this to your scripts (after Firebase):
 
 ```html
-<script src="http://ss15-team32.divshot.io/lib/quick-comments.min.js"></script>
+<script src="http://jss.rabidaudio.netdna-cdn.com/lib/quick-comments.min.js"></script>
 ```
 
 Then instantiate this object:
@@ -115,4 +115,3 @@ TODO
 ====
 
 - maybe gif comparison
-- MaxCDN
