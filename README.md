@@ -109,7 +109,7 @@ Special Features
 ----------------
 
 ![Cat mode](public/images/special-features.png)
-
+Cat mode?
 
 TODO
 ====

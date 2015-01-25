@@ -122,3 +122,7 @@ line-height: 20em;
 #demos .column img {
   width: 100%;
 }
+
+#home .container {
+  padding-top: 10%;
+}
