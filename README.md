@@ -22,6 +22,7 @@ future
 - *replies!*
 - emulate facebook messenger enter functionality
 - allow edits
+- spam filtering
 
 Benefits
 --------
