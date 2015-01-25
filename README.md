@@ -114,11 +114,5 @@ Special Features
 TODO
 ====
 
-- add bower package
-- build example site/landing page
-  - what's the value
-- optimize for size
-- screenshots screenshots screenshots
-  - maybe gif comparison
-- remove this block
+- maybe gif comparison
 - MaxCDN
