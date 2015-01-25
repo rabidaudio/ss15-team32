@@ -72,9 +72,9 @@ Benefits
 
 - bootstrap-friendly
 - small (hopefully) and fast (hopefully)
-- ~no~ reduced third-party tracking of users
+- ~~no~~ **reduced** third-party tracking of users
 - control over the data
-- ~unopinionated?~
+- ~~unopinionated?~~
   - it's a bit opinionated right now, but it should be less so soon
 
 Future Enhancements
@@ -107,12 +107,9 @@ TODO
 - add bower package
 - build example site/landing page
   - what's the value
-- fix multi-line design
-- fix unstyled code
-- write docs
 - optimize for size
 - screenshots screenshots screenshots
   - maybe gif comparison
-- add license file
 - modules??
 - remove this block
+- MaxCDN
