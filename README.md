@@ -87,6 +87,7 @@ Benefits
 Future Enhancements
 -------------------
 
+- modularize
 - *replies!*
 - notifications system
 - custom tempating
@@ -117,6 +118,5 @@ TODO
 - optimize for size
 - screenshots screenshots screenshots
   - maybe gif comparison
-- modules??
 - remove this block
 - MaxCDN

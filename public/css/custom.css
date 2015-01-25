@@ -52,10 +52,9 @@ margin-left: 8%;
   height: 5%;
   min-height: 40px;
 width: 100%;
-/*background-color: rgb(252, 252, 252);*/
-background-color: rgba(252, 252, 252, .02);
 z-index: 1000;
 text-align: center;
+background-color: rgb(252, 252, 252);
 }
 .nav-holder ul {
   margin-bottom: 0px;
@@ -80,6 +79,7 @@ text-align: center;
 
 .column, .columns {
 margin-left: 2%;
+padding: 10px;
 }
 .subheader{
   text-transform: uppercase;
@@ -99,12 +99,17 @@ margin-left: 2%;
   margin-top: 5%;
 }
 
-.bg .column {
+.bg .column, .lightbg {
   background-color: rgba(252, 252, 252, 0.2);
 }
+
 .footer {
   position: absolute;
 bottom: 0px;
-background-color: rgba(254, 254, 254, 0.6);
 width: 100%;
+font-size: .7em;
 }
+
+a, a:visited, a:hover{
+  color: black;
+};
