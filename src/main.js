@@ -19,6 +19,7 @@ var QC = function(riot){
     }
   };
 
+  /* Authentication wrapper (with Events!) */
   function Auth(FB, providers){
     riot.observable(this);
     this.providers = providers;
@@ -62,6 +63,7 @@ var QC = function(riot){
         FB.child('users').child(auth.uid).set(auth);
         return self.trigger('login', auth);
     });
+
     this.login = function(method){
       if(this.currentUser()) throw "Already logged in";
       var p = this.providers[method];
@@ -70,14 +72,11 @@ var QC = function(riot){
         if(err) throw err;
       });
     };
+    
     this.logout = function(){
       FB.unauth();
     };
   }
-
-  // var a=  new Auth(FB, providers)
-  // a.on('login', function(e){ console.log(["login listen", e]); });
-  // a.on('logout', function(){console.log("bark");});
 
   return function(opts){
     if(!opts.firebase) throw "Firebase is required";
