@@ -11,7 +11,6 @@
   padding: 20px;
 }
 </style>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
 </head>
 <body>
 
@@ -77,11 +76,11 @@
     <p>Use the checkbox to enable the styles above for a side-by-side comparison.<br/>
       <input type="checkbox" id="toggle">Styles enabled</input>
     </p>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.2/jquery.min.js"></script>
     <script>
       $(document).ready(function(){
         $("#toggle").change(function(){
           $('#custom-styles')[0].disabled = !$(this).is(':checked');
-          console.log(["change", this]);
         });
         $('#custom-styles')[0].disabled = true;
       });
@@ -138,7 +137,7 @@
 <script src="https://cdn.firebase.com/js/client/2.1.1/firebase.js"></script>
 <script src="../lib/quick-comments.js"></script>
 <script>
- var FB = new Firebase('https://cjk-blog.firebaseio.com');
+ var FB = new Firebase('https://quick-comments-demo.firebaseio.com');
   new QC({
     firebase: FB,
     page: 'basic',

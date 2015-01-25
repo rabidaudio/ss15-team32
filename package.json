@@ -15,7 +15,7 @@
   "bugs": {
     "url": "https://github.com/staticshowdown/ss15-team32/issues"
   },
-  "homepage": "https://github.com/staticshowdown/ss15-team32",
+  "homepage": "http://ss15-team32.divshot.io/",
   "devDependencies": {
     "connect-livereload": "^0.5.2",
     "grunt": "^0.4.5",

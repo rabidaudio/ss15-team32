@@ -1,15 +1,18 @@
 {
   "name": "quick-comments",
   "version": "0.9.0",
-  "homepage": "https://github.com/staticshowdown/ss15-team32",
-  "main": "quick-comments.js",
+  "homepage": "http://ss15-team32.divshot.io/",
+  "main": "lib/quick-comments.js",
   "license": "MIT",
+  "author": "Charles Julian Knight, charles@rabidaudio.com",
   "ignore": [
     "**/.*",
     "node_modules",
-    "bower_components"
+    "bower_components",
+    "public",
+    "divshot.json"
   ],
-  "dependencies": {
+  "devDependencies": {
     "firebase": "~2.1.1",
     "riot": "~2.0.1",
     "vagueTime.js": "~1.2.0"

@@ -43,6 +43,11 @@ new QC({
 
 ```
 
+Authentication
+--------------
+
+User login is handled by Firebase. You'll have to enable each third-party provider you want to allow logins from. See [their docs](https://www.firebase.com/docs/web/guide/user-auth.html).
+
 Dependencies
 ------------
 
