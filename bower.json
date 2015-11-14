@@ -1,6 +1,6 @@
 {
   "name": "quick-comments",
-  "version": "0.9.0",
+  "version": "0.9.1",
   "homepage": "http://ss15-team32.divshot.io/",
   "main": "public/lib/quick-comments.js",
   "license": "MIT",
