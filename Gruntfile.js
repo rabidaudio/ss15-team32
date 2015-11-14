@@ -79,7 +79,7 @@ module.exports = function(grunt) {
 
     uglify: {
       options: {
-        compress: true,
+        compress: {},
       },
       base: {
         files: {
@@ -128,6 +128,13 @@ module.exports = function(grunt) {
       extraDependencies: {
         src: ['bower_components/firebase/firebase.js'],
         dest: '.tmp/includes/'
+      },
+      built: {
+        expand: true,
+        cwd: 'public/lib/',
+        src: '*.js',
+        dest: 'build/',
+        flatten: true
       }
     },
     clean: ['.tmp']
@@ -135,9 +142,9 @@ module.exports = function(grunt) {
 
   grunt.registerTask('build', ['jshint:src', 'compile:tiny', 'compile:base', 'compile:full']);
 
-  grunt.registerTask('compile', ['shell:riot', 'concat:tiny', 'uglify:tiny', 'clean']);
-  grunt.registerTask('compile:base', ['copy:baseDependencies', 'shell:riot', 'concat:base', 'uglify:base', 'clean']);
-  grunt.registerTask('compile:full', ['copy:baseDependencies', 'copy:extraDependencies', 'shell:riot', 'concat:full', 'uglify:full', 'clean']);
+  grunt.registerTask('compile', ['shell:riot', 'concat:tiny', 'uglify:tiny', 'clean', 'copy:built']);
+  grunt.registerTask('compile:base', ['copy:baseDependencies', 'shell:riot', 'concat:base', 'uglify:base', 'clean', 'copy:built']);
+  grunt.registerTask('compile:full', ['copy:baseDependencies', 'copy:extraDependencies', 'shell:riot', 'concat:full', 'uglify:full', 'clean', 'copy:built']);
 
   grunt.registerTask('deploy', ['build', 'divshot:push:development']);
 

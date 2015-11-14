@@ -1,16 +1,18 @@
-riot.tag('comment', '<div class="qc-comment" id="comment/{id.substr(-7)}"> <div class="avatar"> <a href="{author.url}"><img src="{author.avatar}"></a> </div> <div class="qc-header"> <a href="{author.url}" class="{author:1, text-muted:b}">{author.name}</a> |  <a href="#comment/{id}" class="{timestamp:1, text-muted:b}" title="{new Date(opts.data.time).toLocaleString()}">{vagueTime}</a> <a href="#" role="button" class="{edit:1, text-muted:b}" if="{false}">Edit</a> </div> <div class="qc-body"> <p each="{p in paragraphs}">{p}</p> </div> <hr></hr> </div>', function(opts) {
+riot.tag2('comment', '<div class="qc-comment" id="comment/{id.substr(-7)}"> <div class="avatar"> <a href="{author.url}"><img riot-src="{author.avatar}"></a> </div> <div class="qc-header"> <a href="{author.url}" class="{author:1, text-muted:b}">{author.name}</a> | <a href="#comment/{id}" class="{timestamp:1, text-muted:b}" title="{new Date(opts.data.time).toLocaleString()}">{vagueTime}</a> <a href="#" role="button" class="{edit:1, text-muted:b}" if="{false}">Edit</a> </div> <div class="qc-body"> <p each="{p in paragraphs}">{p}</p> </div> <hr> </div>', '', '', function(opts) {
+
   this.id = opts.data.id
   this.author = opts.data.author
-  if(this.parent.parent.opts.meow) opts.data.body = opts.data.body.replace(/[A-Za-z]+/g,'meow'); //so sneaky so cute
+  if(this.parent.parent.opts.meow) opts.data.body = opts.data.body.replace(/[A-Za-z]+/g,'meow');
   this.paragraphs = opts.data.body.split(/\n+/)
   var vagueTime = window.vagueTime || false
-  this.vagueTime = (!!vagueTime ? vagueTime.get({to: opts.data.time}) : new Date(opts.data.time).toLocaleString()) //todo enable language support
+  this.vagueTime = (!!vagueTime ? vagueTime.get({to: opts.data.time}) : new Date(opts.data.time).toLocaleString())
   this.b = this.parent.parent.opts.bootstrap
 
-})
+}, '{ }');
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset>      <textarea __disabled="{parent.Auth.loggedIn() ? undefined : true}" rows="{height}" class="{gc-new-body:1, form-control:b}" name="body" onfocus="{grow}" onblur="{shrink}" onkeydown="{update}" placeholder="{parent.Auth.loggedIn() ? \'Leave a comment\' : \'Sign in to post a comment.\'}"></textarea>\n <div class="qc-user qc-logged-in" if="{parent.Auth.loggedIn()}"> <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick="{logout}"> Log out or switch accounts</a> </p> </div> <div class="{qc-signin:1, input-group-btn:b}" if="{!parent.Auth.loggedIn() || b}"> <button class="{qc-logged-out:1, btn:b, btn-default:b, dropdown-toggle:b}" data-toggle="dropdown" if="{!parent.Auth.loggedIn() && b}">Sign in<span class="caret"></span></button> <span if="{!b}">Sign in:</span> <ul class="{qc-login-opts:1, dropdown-menu:b, dropdown-menu-right:b}" role="menu"> <li each="{name, val in parent.Auth.providers}" if="{val.available}"> <a href="#" role="button" onclick="{parent.login}" class="provider {name}">{parent.capitalize(name)}</a> </li> </ul> </div> <button __disabled="{this.body.value.length ? undefined : true}" class="{submit:1, btn:b, btn-primary:b}" name="submit" onclick="{send}" if="{parent.Auth.loggedIn()}">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
+riot.tag2('newcomment', '<div class="qc-comment qc-new"> <fieldset> <textarea __disabled="{parent.Auth.loggedIn() ? undefined : true}" rows="{height}" class="{gc-new-body:1, form-control:b}" name="body" onfocus="{grow}" onblur="{shrink}" onkeydown="{update}" placeholder="{parent.Auth.loggedIn() ? \'Leave a comment\' : \'Sign in to post a comment.\'}"></textarea> <div class="qc-user qc-logged-in" if="{parent.Auth.loggedIn()}"> <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick="{logout}"> Log out or switch accounts</a> </p> </div> <div class="{qc-signin:1, input-group-btn:b}" if="{!parent.Auth.loggedIn() || b}"> <button class="{qc-logged-out:1, btn:b, btn-default:b, dropdown-toggle:b}" data-toggle="dropdown" if="{!parent.Auth.loggedIn() && b}">Sign in<span class="caret"></span></button> <span if="{!b}">Sign in:</span> <ul class="{qc-login-opts:1, dropdown-menu:b, dropdown-menu-right:b}" role="menu"> <li each="{name, val in parent.Auth.providers}" if="{val.available}"> <a href="#" role="button" onclick="{parent.login}" class="provider {name}">{parent.capitalize(name)}</a> </li> </ul> </div> <button __disabled="{this.body.value.length ? undefined : true}" class="{submit:1, btn:b, btn-primary:b}" name="submit" onclick="{send}" if="{parent.Auth.loggedIn()}">Submit</button> </fieldset> <hr> </div>', '', '', function(opts) {
+
   this.height = 1
 
   this.b = this.parent.opts.bootstrap
@@ -23,40 +25,41 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset>      <textare
     this.body.value = ""
     this.shrink()
   }.bind(this)
-  
+
   this.spamFree = function() {
-    return true //todo
+    return true
   }.bind(this)
 
-  this.grow = function(e) {
+  this.grow = function(e){
     this.height = 5
   }.bind(this)
 
-  this.shrink = function(e) {
+  this.shrink = function(e){
     if(this.body.value.length < 1) this.height = 1
   }.bind(this)
 
-  this.login = function(e) {
+  this.login = function(e){
     this.parent.Auth.login(e.item.name)
   }.bind(this)
 
-  this.logout = function(e) {
+  this.logout = function(e){
     this.parent.Auth.logout()
   }.bind(this)
 
-  this.change = function(type, auth) {
-    this.update() 
+  this.change = function(type, auth){
+    this.update()
   }.bind(this)
-  this.parent.Auth.on("login logout", this.change) //this drives me crazy
+  this.parent.Auth.on("login logout", this.change)
 
-  this.capitalize = function(s) {
+  this.capitalize = function(s){
     return s.split(" ").map(function(e){var a = e.split(""); a.unshift(a.shift().toUpperCase()); return a.join("")}).join(" ")
   }.bind(this)
 
-})
+}, '{ }');
 
 
-riot.tag('qcomment', '<style name="core"></style> <h2 id="comments">Comments ({comments.length})</h2> <newcomment></newcomment> <div class="qc-comments"> <comment each="{comments}" data="{this}"></comment> </div>', function(opts) {
+riot.tag2('qcomment', '<h2 id="comments">Comments ({comments.length})</h2> <newcomment></newcomment> <div class="qc-comments"><comment each="{comments}" data="{this}"></comment></div>', '', '', function(opts) {
+
   this.providers = opts.providers
   this.pageID    = opts.pageID
   this.firebase  = opts.firebase
@@ -65,7 +68,7 @@ riot.tag('qcomment', '<style name="core"></style> <h2 id="comments">Comments ({c
   this.dataset   = this.firebase.child('comments').child(this.pageID)
   this.comments  = []
 
-  this.save = function(comment) {
+  this.save = function(comment){
     if(!opts.Auth.currentUser()) throw "Must be logged in to comment"
     this.dataset.push({
       author: this.Auth.currentUser(),
@@ -74,17 +77,17 @@ riot.tag('qcomment', '<style name="core"></style> <h2 id="comments">Comments ({c
     })
   }.bind(this)
 
-  this.getComment = function(snapshot) {
+  this.getComment = function(snapshot){
     var comment = snapshot.val()
     comment.id = snapshot.key()
     return comment
   }.bind(this)
-  this.addComment = function(snapshot) {
+  this.addComment = function(snapshot){
     var comment = this.getComment(snapshot)
     this.comments.unshift(comment)
     return this.update()
   }.bind(this)
-  this.updateComment = function(snapshot) {
+  this.updateComment = function(snapshot){
     var comment = this.getComment(snapshot)
     for(var i = this.comments.length;i-->0;){
       if(this.comments[i].id === comment.id){
@@ -93,7 +96,7 @@ riot.tag('qcomment', '<style name="core"></style> <h2 id="comments">Comments ({c
       }
     }
   }.bind(this)
-  this.removeComment = function(snapshot) {
+  this.removeComment = function(snapshot){
     var comment = this.getComment(snapshot)
     for(var i = this.comments.length;i-->0;){
       if(this.comments[i].id === comment.id){
@@ -120,8 +123,9 @@ riot.tag('qcomment', '<style name="core"></style> <h2 id="comments">Comments ({c
   ".avatar img {"+
     "max-width: 5em;"+
   "}";
-  
-})
+
+}, '{ }');
+
 
 
 var QC = function(riot){

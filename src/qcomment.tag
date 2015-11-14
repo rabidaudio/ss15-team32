@@ -1,10 +1,8 @@
 <qcomment>
-  <style name="core"></style>
-  <h2 id="comments">Comments ({comments.length})</h2>
-  <newcomment/>
-  <div class="qc-comments">
-    <comment each={comments} data={this}/>
-  </div>
+<style name="core"></style>
+<h2 id="comments">Comments ({comments.length})</h2>
+<newcomment/>
+<div class="qc-comments"><comment each={comments} data={this}/></div>
 
   this.providers = opts.providers
   this.pageID    = opts.pageID
