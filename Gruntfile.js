@@ -122,7 +122,7 @@ module.exports = function(grunt) {
     },
     copy: {
       baseDependencies: {
-        src: ['bower_components/vagueTime.js/lib/vagueTime-en.js', 'bower_components/riot/dist/riot.min.js'],
+        src: ['bower_components/vagueTime.js/lib/vagueTime-en.js', 'bower_components/riot/riot.min.js'],
         dest: '.tmp/includes/'
       },
       extraDependencies: {
