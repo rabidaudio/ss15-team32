@@ -5,7 +5,7 @@
     </div>
     <div class="qc-header">
       <a href="{author.url}" class={author:1, text-muted:b}>{author.name}</a> | 
-      <a href="#comment/{id}" class={timestamp:1, text-muted:b} title="{new Date(opts.data.time).toLocaleString()}">{vagueTime}</a>
+      <a href="#comment/{id.substr(-7)}" class={timestamp:1, text-muted:b} title="{new Date(opts.data.time).toLocaleString()}">{vagueTime}</a>
       <a href="#" role="button" class={edit:1, text-muted:b} if={false}>Edit</a>
     </div>
     <div class="qc-body">

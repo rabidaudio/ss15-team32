@@ -1,7 +1,7 @@
 <newcomment>
   <div class="qc-comment qc-new">
     <fieldset>
-      <textarea disabled={parent.Auth.loggedIn() ? undefined : true} rows={height} class={gc-new-body:1, form-control:b} name="body" onfocus={grow} onblur={shrink} onkeydown={update} placeholder={parent.Auth.loggedIn() ? 'Leave a comment' : 'Sign in to post a comment.'}></textarea>
+      <textarea disabled={parent.Auth.loggedIn() ? undefined : true} rows={height} class={qc-new-body:1, form-control:b} name="body" onfocus={grow} onblur={shrink} onkeydown={update} placeholder={parent.Auth.loggedIn() ? 'Leave a comment' : 'Sign in to post a comment.'}></textarea>
       <div class="qc-user qc-logged-in" if={parent.Auth.loggedIn()}>
         <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick={logout}>
           Log out or switch accounts</a>

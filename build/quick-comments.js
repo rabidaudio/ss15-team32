@@ -157,7 +157,7 @@
 
 
 
-riot.tag('comment', '<div class="qc-comment" id="comment/{id.substr(-7)}"> <div class="avatar"> <a href="{author.url}"><img src="{author.avatar}"></a> </div> <div class="qc-header"> <a href="{author.url}" class="{author:1, text-muted:b}">{author.name}</a> | <a href="#comment/{id}" class="{timestamp:1, text-muted:b}" title="{new Date(opts.data.time).toLocaleString()}">{vagueTime}</a> <a href="#" role="button" class="{edit:1, text-muted:b}" if="{false}">Edit</a> </div> <div class="qc-body"> <p each="{p in paragraphs}">{p}</p> </div> <hr></hr> </div>', function(opts) {
+riot.tag('comment', '<div class="qc-comment" id="comment/{id.substr(-7)}"> <div class="avatar"> <a href="{author.url}"><img src="{author.avatar}"></a> </div> <div class="qc-header"> <a href="{author.url}" class="{author:1, text-muted:b}">{author.name}</a> | <a href="#comment/{id.substr(-7)}" class="{timestamp:1, text-muted:b}" title="{new Date(opts.data.time).toLocaleString()}">{vagueTime}</a> <a href="#" role="button" class="{edit:1, text-muted:b}" if="{false}">Edit</a> </div> <div class="qc-body"> <p each="{p in paragraphs}">{p}</p> </div> <hr></hr> </div>', function(opts) {
 
   this.id = opts.data.id
   this.author = opts.data.author
@@ -171,7 +171,8 @@ riot.tag('comment', '<div class="qc-comment" id="comment/{id.substr(-7)}"> <div 
 });
 
 
-riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset> <textarea __disabled="{parent.Auth.loggedIn() ? undefined : true}" rows="{height}" class="{gc-new-body:1, form-control:b}" name="body" onfocus="{grow}" onblur="{shrink}" onkeydown="{update}" placeholder="{parent.Auth.loggedIn() ? \'Leave a comment\' : \'Sign in to post a comment.\'}"></textarea> <div class="qc-user qc-logged-in" if="{parent.Auth.loggedIn()}"> <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick="{logout}"> Log out or switch accounts</a> </p> </div> <div class="{qc-signin:1, input-group-btn:b}" if="{!parent.Auth.loggedIn() || b}"> <button class="{qc-logged-out:1, btn:b, btn-default:b, dropdown-toggle:b}" data-toggle="dropdown" if="{!parent.Auth.loggedIn() && b}">Sign in<span class="caret"></span></button> <span if="{!b}">Sign in:</span> <ul class="{qc-login-opts:1, dropdown-menu:b, dropdown-menu-right:b}" role="menu"> <li each="{name, val in parent.Auth.providers}" if="{val.available}"> <a href="#" role="button" onclick="{parent.login}" class="provider {name}">{parent.capitalize(name)}</a> </li> </ul> </div> <button __disabled="{this.body.value.length ? undefined : true}" class="{submit:1, btn:b, btn-primary:b}" name="submit" onclick="{send}" if="{parent.Auth.loggedIn()}">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
+
+riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset> <textarea __disabled="{parent.Auth.loggedIn() ? undefined : true}" rows="{height}" class="{qc-new-body:1, form-control:b}" name="body" onfocus="{grow}" onblur="{shrink}" onkeydown="{update}" placeholder="{parent.Auth.loggedIn() ? \'Leave a comment\' : \'Sign in to post a comment.\'}"></textarea> <div class="qc-user qc-logged-in" if="{parent.Auth.loggedIn()}"> <p>Logged in as {parent.Auth.currentUser().name} (via {capitalize(parent.Auth.currentUser().provider)}). <a href="#" role="button" onclick="{logout}"> Log out or switch accounts</a> </p> </div> <div class="{qc-signin:1, input-group-btn:b}" if="{!parent.Auth.loggedIn() || b}"> <button class="{qc-logged-out:1, btn:b, btn-default:b, dropdown-toggle:b}" data-toggle="dropdown" if="{!parent.Auth.loggedIn() && b}">Sign in<span class="caret"></span></button> <span if="{!b}">Sign in:</span> <ul class="{qc-login-opts:1, dropdown-menu:b, dropdown-menu-right:b}" role="menu"> <li each="{name, val in parent.Auth.providers}" if="{val.available}"> <a href="#" role="button" onclick="{parent.login}" class="provider {name}">{parent.capitalize(name)}</a> </li> </ul> </div> <button __disabled="{this.body.value.length ? undefined : true}" class="{submit:1, btn:b, btn-primary:b}" name="submit" onclick="{send}" if="{parent.Auth.loggedIn()}">Submit</button> </fieldset> <hr></hr> </div>', function(opts) {
 
   this.height = 1
 
@@ -217,6 +218,7 @@ riot.tag('newcomment', '<div class="qc-comment qc-new"> <fieldset> <textarea __d
 
 
 });
+
 
 
 riot.tag('qcomment', '<style name="core"></style> <h2 id="comments">Comments ({comments.length})</h2> <newcomment></newcomment> <div class="qc-comments"><comment each="{comments}" data={this}></div></div>', function(opts) {
