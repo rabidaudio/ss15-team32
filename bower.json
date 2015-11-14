@@ -14,7 +14,7 @@
   ],
   "devDependencies": {
     "firebase": "~2.1.1",
-    "riot": "~2.0.1",
+    "riot": "2.0.5",
     "vagueTime.js": "~1.2.0"
   }
 }
